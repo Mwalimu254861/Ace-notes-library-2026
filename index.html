@@ -377,6 +377,303 @@
     if (!phone) return "Phone number is required.";
     if (phone.length < 5) return "Phone number must be at least 5 characters.";
     return null; // valid
+        <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KCSE Revision | Simple Save</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            margin: 1rem 0;
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+
+        .subject-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .subject-item input {
+            width: auto;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1rem;
+            width: 100%;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        .success-message {
+            background: #4CAF50;
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 1rem;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .dashboard {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #f0f0f0;
+            border-radius: 10px;
+        }
+
+        .subject-badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            margin: 0.2rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 KCSE Revision Hub</h1>
+        
+        <!-- Personal Information Section -->
+        <div id="personalInfoSection">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="fullName" placeholder="Enter your full name">
+            </div>
+            
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="email" placeholder="student@example.com">
+            </div>
+            
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="tel" id="phone" placeholder="0712345678">
+            </div>
+            
+            <div class="form-group">
+                <label>Select Your Subjects</label>
+                <div class="subjects-grid" id="subjectsList">
+                    <!-- Subjects will be added here by JavaScript -->
+                </div>
+            </div>
+            
+            <button id="saveBtn">💾 SAVE CHANGES</button>
+        </div>
+        
+        <!-- Success Message (hidden initially) -->
+        <div id="successMessage" class="success-message hidden"></div>
+        
+        <!-- Dashboard (appears after save) -->
+        <div id="dashboard" class="dashboard hidden">
+            <h3>✅ Your Revision Dashboard</h3>
+            <p><strong>Welcome!</strong> Your subjects:</p>
+            <div id="selectedSubjectsDisplay"></div>
+        </div>
+    </div>
+
+    <script>
+        // List of KCSE subjects
+        const subjects = [
+            "MATHEMATICS", "ENGLISH", "KISWAHILI", "BIOLOGY", 
+            "CHEMISTRY", "PHYSICS", "HISTORY", "CRE", 
+            "BUSINESS", "COMPUTER STUDIES"
+        ];
+        
+        // Create checkboxes for subjects
+        const subjectsList = document.getElementById('subjectsList');
+        subjects.forEach(subject => {
+            const div = document.createElement('div');
+            div.className = 'subject-item';
+            div.innerHTML = `
+                <input type="checkbox" id="subj_${subject}" value="${subject}">
+                <label for="subj_${subject}">${subject}</label>
+            `;
+            subjectsList.appendChild(div);
+        });
+        
+        // Get elements
+        const saveBtn = document.getElementById('saveBtn');
+        const personalInfoSection = document.getElementById('personalInfoSection');
+        const successMessage = document.getElementById('successMessage');
+        const dashboard = document.getElementById('dashboard');
+        const selectedSubjectsDisplay = document.getElementById('selectedSubjectsDisplay');
+        
+        // Save button click handler
+        saveBtn.addEventListener('click', function() {
+            // Get values
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            
+            // Get selected subjects
+            const selectedSubjects = [];
+            subjects.forEach(subject => {
+                const checkbox = document.getElementById(`subj_${subject}`);
+                if (checkbox.checked) {
+                    selectedSubjects.push(subject);
+                }
+            });
+            
+            // Validate
+            if (!fullName || !email || !phone) {
+                alert('Please fill in all personal details!');
+                return;
+            }
+            
+            if (selectedSubjects.length === 0) {
+                alert('Please select at least one subject!');
+                return;
+            }
+            
+            if (!email.includes('@')) {
+                alert('Please enter a valid email address!');
+                return;
+            }
+            
+            // Show success message
+            successMessage.innerHTML = `✅ SUCCESS! Welcome ${fullName}! Your ${selectedSubjects.length} subject(s) have been saved.`;
+            successMessage.classList.remove('hidden');
+            
+            // Hide personal information section (disappears)
+            personalInfoSection.style.display = 'none';
+            
+            // Show dashboard with selected subjects
+            dashboard.classList.remove('hidden');
+            
+            // Display selected subjects as badges
+            selectedSubjectsDisplay.innerHTML = '';
+            selectedSubjects.forEach(subject => {
+                const badge = document.createElement('span');
+                badge.className = 'subject-badge';
+                badge.textContent = subject;
+                selectedSubjectsDisplay.appendChild(badge);
+            });
+            
+            // Add welcome message with name
+            const welcomeMsg = document.createElement('p');
+            welcomeMsg.innerHTML = `<br>📧 Email: ${email}<br>📱 Phone: ${phone}`;
+            selectedSubjectsDisplay.appendChild(welcomeMsg);
+            
+            // Optional: Save to localStorage
+            const studentData = {
+                name: fullName,
+                email: email,
+                phone: phone,
+                subjects: selectedSubjects,
+                savedAt: new Date().toISOString()
+            };
+            localStorage.setItem('kcseStudent', JSON.stringify(studentData));
+            
+            // Console log for admin
+            console.log('Student saved:', studentData);
+        });
+        
+        // Check if student already saved (optional)
+        const savedData = localStorage.getItem('kcseStudent');
+        if (savedData) {
+            const data = JSON.parse(savedData);
+            const confirmLoad = confirm(`Welcome back ${data.name}! Load your saved dashboard?`);
+            if (confirmLoad) {
+                document.getElementById('fullName').value = data.name;
+                document.getElementById('email').value = data.email;
+                document.getElementById('phone').value = data.phone;
+                
+                data.subjects.forEach(subject => {
+                    const checkbox = document.getElementById(`subj_${subject}`);
+                    if (checkbox) checkbox.checked = true;
+                });
+                
+                // Trigger save automatically
+                saveBtn.click();
+            }
+        }
+    </script>
+</body>
+</html>
   }
 
   // show temporary feedback message in selectionFeedback div
