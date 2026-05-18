@@ -519,3 +519,137 @@
 </script>
 </body>
 </html>
+// Add this to your existing script, replace renderYearsForSubject function:
+
+// PDF Configuration - store your PDF file paths
+// You can use Google Drive links or local paths
+const pdfDatabase = {}; // Will be populated
+
+async function renderYearsForSubject(subject) {
+  if (!yearsGridDiv) return;
+  yearsGridDiv.innerHTML = '';
+  
+  for (let year = 2000; year <= 2027; year++) {
+    const yearBtn = document.createElement('button');
+    yearBtn.className = 'year-tab';
+    yearBtn.textContent = `KCSE ${year}`;
+    yearBtn.setAttribute('data-year', year);
+    
+    // Check if PDF exists (optional pre-check)
+    const pdfUrl = await getPdfUrl(subject, year);
+    
+    yearBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openPastPaper(subject, year, pdfUrl);
+    });
+    
+    yearsGridDiv.appendChild(yearBtn);
+  }
+  
+  // Add PDF preview container
+  if (!document.getElementById('pdfPreviewContainer')) {
+    const previewDiv = document.createElement('div');
+    previewDiv.id = 'pdfPreviewContainer';
+    previewDiv.style.cssText = 'margin-top: 1.5rem; border-radius: 1rem; overflow: hidden; background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.1);';
+    yearsGridDiv.parentElement.appendChild(previewDiv);
+  }
+}
+
+async function getPdfUrl(subject, year) {
+  // Option 1: Local files (upload to your server)
+  const localPath = `/pastpapers/${encodeURIComponent(subject)}/${year}.pdf`;
+  
+  // Option 2: Google Drive links (create a mapping)
+  // You can store this in a JSON file or database
+  const googleDriveLinks = {
+    "MATHEMATICS-2023": "https://drive.google.com/file/d/YOUR_FILE_ID/preview",
+    // Add more as needed
+  };
+  
+  const key = `${subject}-${year}`;
+  if (googleDriveLinks[key]) {
+    return googleDriveLinks[key];
+  }
+  
+  return localPath;
+}
+
+function openPastPaper(subject, year, pdfUrl) {
+  const feedbackEl = document.getElementById('yearClickFeedback');
+  const previewContainer = document.getElementById('pdfPreviewContainer');
+  
+  // Check if PDF exists (attempt to fetch)
+  fetch(pdfUrl, { method: 'HEAD' })
+    .then(response => {
+      if (response.ok) {
+        // PDF exists - open or preview
+        showPdfPreview(pdfUrl, subject, year);
+        if (feedbackEl) {
+          feedbackEl.innerHTML = `✅ Loaded ${subject} KCSE ${year} past paper. PDF ready!`;
+          feedbackEl.style.background = "#d4edda";
+        }
+      } else {
+        // PDF not uploaded yet
+        if (feedbackEl) {
+          feedbackEl.innerHTML = `⚠️ ${subject} KCSE ${year} paper not uploaded yet. Contact admin to add this PDF.`;
+          feedbackEl.style.background = "#fff3cd";
+        }
+        showUploadPrompt(subject, year);
+      }
+    })
+    .catch(() => {
+      if (feedbackEl) {
+        feedbackEl.innerHTML = `📢 ${subject} KCSE ${year} - PDF coming soon. Upload using admin panel.`;
+        feedbackEl.style.background = "#fff3cd";
+      }
+    });
+}
+
+function showPdfPreview(pdfUrl, subject, year) {
+  const previewContainer = document.getElementById('pdfPreviewContainer');
+  if (previewContainer) {
+    previewContainer.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 1.2rem; background: #1e3a8a; color: white;">
+        <strong>📖 ${subject} KCSE ${year} Past Paper</strong>
+        <div>
+          <button id="downloadPdfBtn" style="background: #ffcd6b; border: none; padding: 0.3rem 1rem; border-radius: 2rem; margin-right: 0.5rem; cursor: pointer;">⬇ Download</button>
+          <button id="closePdfBtn" style="background: #dc3545; border: none; padding: 0.3rem 1rem; border-radius: 2rem; cursor: pointer;">✖ Close</button>
+        </div>
+      </div>
+      <iframe src="${pdfUrl}" style="width: 100%; height: 70vh; border: none;"></iframe>
+    `;
+    
+    document.getElementById('downloadPdfBtn')?.addEventListener('click', () => {
+      window.open(pdfUrl, '_blank');
+    });
+    
+    document.getElementById('closePdfBtn')?.addEventListener('click', () => {
+      previewContainer.innerHTML = '';
+    });
+  }
+}
+
+function showUploadPrompt(subject, year) {
+  // Optional: Show upload form for admin
+  const previewContainer = document.getElementById('pdfPreviewContainer');
+  if (previewContainer && previewContainer.innerHTML === '') {
+    previewContainer.innerHTML = `
+      <div style="padding: 1rem; background: #f8f9fa; text-align: center; border: 2px dashed #ffcd6b; border-radius: 1rem;">
+        <p><strong>📄 ${subject} - ${year} past paper missing</strong></p>
+        <p>If you're the admin, upload the PDF here:</p>
+        <input type="file" id="pdfUploadInput" accept=".pdf" style="margin: 0.5rem;">
+        <button id="uploadPdfBtn" style="background: #28a745; color: white; border: none; padding: 0.5rem 1rem; border-radius: 2rem; cursor: pointer;">Upload PDF</button>
+      </div>
+    `;
+    
+    document.getElementById('uploadPdfBtn')?.addEventListener('click', () => {
+      const fileInput = document.getElementById('pdfUploadInput');
+      const file = fileInput?.files[0];
+      if (file) {
+        // In production, send to your server
+        console.log(`Upload PDF for ${subject}/${year}.pdf`, file);
+        alert(`Demo: PDF "${file.name}" would be saved as /pastpapers/${subject}/${year}.pdf`);
+      }
+    });
+  }
+}
