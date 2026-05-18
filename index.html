@@ -1,434 +1,82 @@
 <h1> ACE NOTES LIBRARY</h1>
-
-      <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>KCSE Subject Studio | Interactive Year Explorer</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      background: linear-gradient(145deg, #f4f9ff 0%, #e9f0f5 100%);
-      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
-      padding: 2rem 1.5rem;
-      min-height: 100vh;
-    }
-
-    /* main website container */
-    .website {
-      max-width: 1400px;
-      margin: 0 auto;
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(2px);
-      border-radius: 2.5rem;
-      box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.2);
-      padding: 2rem 2rem 1.5rem;
-      transition: all 0.2s;
-    }
-
-    /* HIGHLIGHTED HEADLINES */
-    .highlight {
-      background: linear-gradient(135deg, #0b2b44, #1f5e8c);
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-      border-left: 6px solid #f5b042;
-      padding-left: 1.2rem;
-      font-weight: 800;
-      letter-spacing: -0.3px;
-      margin: 0.5rem 0 1rem 0;
-      font-size: 1.9rem;
-    }
-
-    .section-title {
-      background: linear-gradient(125deg, #1f3a5f, #2b4f7c);
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-      border-left: 5px solid #f4bc5c;
-      padding-left: 1rem;
-      margin: 1rem 0 1rem 0;
-      font-weight: 700;
-      font-size: 1.5rem;
-    }
-
-    /* card style */
-    .info-card {
-      background: white;
-      border-radius: 1.8rem;
-      padding: 1.2rem 1.8rem;
-      margin-bottom: 1.8rem;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.03);
-      border: 1px solid #eef2f8;
-    }
-
-    /* form rows */
-    .form-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.2rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .field {
-      flex: 1;
-      min-width: 200px;
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-    }
-
-    .field label {
-      font-weight: 700;
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: #2c3e66;
-    }
-
-    input, button {
-      border-radius: 3rem;
-      border: 1.5px solid #e2e8f0;
-      padding: 0.8rem 1.2rem;
-      font-size: 0.95rem;
-      background: white;
-      transition: all 0.2s;
-      outline: none;
-    }
-
-    input:focus {
-      border-color: #f5b042;
-      box-shadow: 0 0 0 3px rgba(245, 176, 66, 0.2);
-    }
-
-    button {
-      background: linear-gradient(105deg, #1f3e6b, #2c5282);
-      color: white;
-      font-weight: 700;
-      border: none;
-      cursor: pointer;
-      padding: 0.8rem 1.8rem;
-      font-size: 0.9rem;
-    }
-
-    button:hover {
-      transform: translateY(-2px);
-      background: linear-gradient(105deg, #143256, #1f4170);
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
-    }
-
-    .secondary {
-      background: linear-gradient(105deg, #4a627a, #3b5570);
-    }
-
-    /* subject checklist */
-    .subject-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.8rem;
-      margin: 1rem 0 1.2rem;
-    }
-
-    .subject-check {
-      background: #f0f5fc;
-      padding: 0.6rem 1.2rem;
-      border-radius: 3rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.7rem;
-      cursor: pointer;
-      font-weight: 500;
-      border: 1px solid #dce5f0;
-      transition: all 0.1s;
-    }
-
-    .subject-check input {
-      width: 1.2rem;
-      height: 1.2rem;
-      margin: 0;
-      accent-color: #f5b042;
-    }
-
-    .subject-check span {
-      color: #1f3a5f;
-      user-select: none;
-    }
-
-    /* DECORATED SUBJECT TABS (only selected) */
-    .decorated-tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin: 1rem 0 1rem;
-    }
-
-    .sub-tab {
-      background: linear-gradient(125deg, #ffe9d4, #ffddbc);
-      color: #2b2b24;
-      font-weight: 800;
-      padding: 0.8rem 2rem;
-      border-radius: 3rem;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.2s;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      border: 1px solid #ffcf97;
-      text-align: center;
-    }
-
-    .sub-tab:hover {
-      background: linear-gradient(125deg, #ffdebe, #ffcf9a);
-      transform: scale(0.97);
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
-    }
-
-    /* year buttons container */
-    .year-strip {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      margin: 1rem 0 0.5rem;
-      max-height: 280px;
-      overflow-y: auto;
-      padding: 0.4rem 0.2rem;
-    }
-
-    .year-btn {
-      background: linear-gradient(135deg, #eef2f9, #e3eaf2);
-      border: none;
-      color: #1e3a5f;
-      font-weight: 600;
-      padding: 0.5rem 1.2rem;
-      border-radius: 2.5rem;
-      font-size: 0.85rem;
-      cursor: pointer;
-      transition: 0.2s;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    }
-
-    .year-btn:hover {
-      background: #f4bc5c;
-      color: #1e2e42;
-      transform: translateY(-3px);
-    }
-
-    .info-message {
-      background: #fef7e6;
-      padding: 0.8rem 1.2rem;
-      border-radius: 1.5rem;
-      border-left: 5px solid #f5b042;
-      color: #3c4f6e;
-      font-size: 0.9rem;
-      margin: 0.8rem 0;
-    }
-
-    .feedback {
-      font-size: 0.85rem;
-      color: #2c5282;
-      margin-top: 0.5rem;
-      font-weight: 500;
-    }
-
-    .error {
-      background: #ffe6e5;
-      border-left-color: #d9534f;
-      color: #b33;
-    }
-
-    hr {
-      margin: 1rem 0;
-      border: none;
-      height: 2px;
-      background: linear-gradient(90deg, #e2e8f0, #f5b042, #e2e8f0);
-    }
-
-    footer {
-      text-align: center;
-      margin-top: 2rem;
-      font-size: 0.7rem;
-      color: #5f7d9c;
-      padding-top: 1rem;
-    }
-
-    @media (max-width: 700px) {
-      .website { padding: 1.3rem; }
-      .sub-tab { padding: 0.5rem 1.2rem; }
-    }
-  </style>
-</head>
-<body>
-<div class="website">
-  <div class="highlight">🎓 KCSE Academic Studio</div>
-  <p style="color: #4b6a8b; margin-bottom: 1.5rem;">Enter your details, choose your subjects, then explore years for each subject.</p>
-
-  <!-- USER DETAILS SECTION -->
-  <div class="info-card">
-    <div class="section-title">👤 Your details</div>
-    <div class="form-row">
-      <div class="field">
-        <label>Full name</label>
-        <input type="text" id="fullName" placeholder="e.g., Amara Ochieng" autocomplete="name">
-      </div>
-      <div class="field">
-        <label>Email address</label>
-        <input type="email" id="emailAddr" placeholder="student@kcse.com" autocomplete="email">
-      </div>
-      <div class="field">
-        <label>Phone number</label>
-        <input type="tel" id="phoneNum" placeholder="+254 700 123456" autocomplete="tel">
-      </div>
-    </div>
-    <div id="detailsError" class="info-message error" style="display: none;"></div>
-  </div>
-
-  <!-- SUBJECT SELECTION (multi-check) -->
-  <div class="info-card">
-    <div class="section-title">📚 Choose your subjects</div>
-    <div id="subjectsChecklist" class="subject-grid"></div>
-    <button id="refreshSubjectsBtn">✨ Save & Generate Subject Tabs</button>
-    <div id="selectionFeedback" class="info-message" style="display: none;"></div>
-  </div>
-
-  <!-- DECORATED SUBJECT TABS (dynamic, only selected) -->
-  <div class="info-card">
-    <div class="section-title">⭐ Your subject tabs (click to see KCSE years)</div>
-    <div id="decoratedSubjectsContainer" class="decorated-tabs">
-      <div class="info-message">No subjects selected yet. Pick your subjects above and click "Save".</div>
-    </div>
-  </div>
-
-  <!-- YEARS EXPLORER -->
-  <div class="info-card">
-    <div class="section-title" id="yearsTitle">📅 KCSE Year Explorer</div>
-    <div id="yearsWrapper" class="year-strip">
-      <div class="info-message">Click any subject tab above to display KCSE years (2000 – 2027).</div>
-    </div>
-    <div id="yearClickMsg" class="feedback"></div>
-  </div>
-  <footer>© Professional academic tool — highlighted headlines, coloured subject tabs, fully interactive year browser</footer>
-</div>
-
-<script>
-  // Master subject list (duplicate KISWAHILI removed)
-  const ALL_SUBJECTS = [
-    "MATHEMATICS", "ENGLISH", "KISWAHILI", "BIOLOGY", "CHEMISTRY",
-    "PHYSICS", "HISTORY", "CRE", "BUSINESS", "COMPUTER STUDIES", "GEOGRAPHY"
-  ];
-
-  // ---------- DOM elements ----------
-  const fullNameInput = document.getElementById('fullName');
-  const emailInput = document.getElementById('emailAddr');
-  const phoneInput = document.getElementById('phoneNum');
-  const detailsErrorDiv = document.getElementById('detailsError');
-  const subjectsChecklistDiv = document.getElementById('subjectsChecklist');
-  const refreshBtn = document.getElementById('refreshSubjectsBtn');
-  const decoratedContainer = document.getElementById('decoratedSubjectsContainer');
-  const yearsWrapper = document.getElementById('yearsWrapper');
-  const yearsTitle = document.getElementById('yearsTitle');
-  const yearClickMsgSpan = document.getElementById('yearClickMsg');
-  const selectionFeedback = document.getElementById('selectionFeedback');
-
-  // State: current selected subjects array
-  let currentSelectedSubjects = [];
-
-  // ---------- Helper: render subject checkboxes (pre-check saved ones) ----------
-  function renderSubjectChecklist() {
-    subjectsChecklistDiv.innerHTML = '';
-    ALL_SUBJECTS.forEach(sub => {
-      const label = document.createElement('label');
-      label.className = 'subject-check';
-      const cb = document.createElement('input');
-      cb.type = 'checkbox';
-      cb.value = sub;
-      cb.checked = currentSelectedSubjects.includes(sub);
-      const span = document.createElement('span');
-      span.innerText = sub;
-      label.appendChild(cb);
-      label.appendChild(span);
-      subjectsChecklistDiv.appendChild(label);
-    });
-  }
-
-  // get currently checked subjects from checklist
-  function getCheckedSubjects() {
-    const checkboxes = document.querySelectorAll('#subjectsChecklist input[type="checkbox"]');
-    const checked = [];
-    checkboxes.forEach(cb => {
-      if (cb.checked) checked.push(cb.value);
-    });
-    return checked;
-  }
-
-  // validate user details (name, email, phone)
-  function areDetailsValid() {
-    const name = fullNameInput.value.trim();
-    const email = emailInput.value.trim();
-    const phone = phoneInput.value.trim();
-    if (!name) return "Full name is required.";
-    if (!email) return "Email address is required.";
-    const emailPattern = /^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/;
-    if (!emailPattern.test(email)) return "Please enter a valid email (e.g., name@domain.com).";
-    if (!phone) return "Phone number is required.";
-    if (phone.length < 5) return "Phone number must be at least 5 characters.";
-    return null; // valid
-        <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KCSE Revision | Simple Save</title>
+    <title>KCSE Revision Hub - Complete System</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 2rem;
+            padding: 20px;
         }
 
         .container {
-            max-width: 600px;
+            max-width: 1400px;
             margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
 
-        h1 {
-            color: #333;
-            margin-bottom: 1.5rem;
+        /* Header */
+        .header {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             text-align: center;
         }
 
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        /* Registration Form */
+        .registration-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.5s ease;
+        }
+
+        .registration-panel.hidden {
+            display: none;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
         .form-group {
-            margin-bottom: 1rem;
+            margin-bottom: 15px;
         }
 
         label {
             display: block;
-            margin-bottom: 0.5rem;
+            margin-bottom: 5px;
             font-weight: bold;
             color: #555;
         }
 
         input, select {
             width: 100%;
-            padding: 0.75rem;
+            padding: 10px;
             border: 2px solid #ddd;
-            border-radius: 10px;
-            font-size: 1rem;
+            border-radius: 8px;
+            font-size: 14px;
         }
 
         input:focus, select:focus {
@@ -438,20 +86,20 @@
 
         .subjects-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.5rem;
-            margin: 1rem 0;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
             max-height: 200px;
             overflow-y: auto;
-            padding: 0.5rem;
-            border: 1px solid #ddd;
-            border-radius: 10px;
         }
 
         .subject-item {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 8px;
         }
 
         .subject-item input {
@@ -462,13 +110,11 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 1rem;
-            width: 100%;
-            border-radius: 10px;
-            font-size: 1.1rem;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 1rem;
             transition: transform 0.2s;
         }
 
@@ -477,12 +123,12 @@
         }
 
         .success-message {
-            background: #4CAF50;
-            color: white;
-            padding: 1rem;
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
             border-radius: 10px;
+            margin-top: 15px;
             text-align: center;
-            margin-top: 1rem;
             animation: fadeIn 0.5s;
         }
 
@@ -491,330 +137,465 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .hidden {
+        /* Two column layout for main content */
+        .two-columns {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 20px;
+        }
+
+        /* Upload Panel (Admin Only - Hidden by default) */
+        .upload-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            height: fit-content;
             display: none;
         }
 
-        .dashboard {
-            margin-top: 2rem;
-            padding: 1rem;
-            background: #f0f0f0;
+        .upload-panel.show {
+            display: block;
+        }
+
+        .upload-panel h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        /* Years Grid */
+        .years-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .subject-selector {
+            margin-bottom: 20px;
+        }
+
+        .years-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .year-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .year-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .year-card.has-pdf {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .year-number {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .pdf-badge {
+            font-size: 12px;
+            margin-top: 5px;
+            opacity: 0.8;
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            display: none;
+        }
+
+        .year-card:hover .delete-btn {
+            display: block;
+        }
+
+        /* PDF Viewer */
+        .pdf-viewer {
+            margin-top: 20px;
+            border-top: 2px solid #eee;
+            padding-top: 20px;
+        }
+
+        .pdf-viewer iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
             border-radius: 10px;
         }
 
-        .subject-badge {
-            display: inline-block;
-            background: #667eea;
+        .message {
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+
+        .admin-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #dc3545;
             color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            margin: 0.2rem;
-            font-size: 0.9rem;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            z-index: 1000;
+        }
+
+        .welcome-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .two-columns {
+                grid-template-columns: 1fr;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📚 KCSE Revision Hub</h1>
-        
-        <!-- Personal Information Section -->
-        <div id="personalInfoSection">
-            <div class="form-group">
-                <label>Full Name</label>
-                <input type="text" id="fullName" placeholder="Enter your full name">
-            </div>
-            
-            <div class="form-group">
-                <label>Email Address</label>
-                <input type="email" id="email" placeholder="student@example.com">
-            </div>
-            
-            <div class="form-group">
-                <label>Phone Number</label>
-                <input type="tel" id="phone" placeholder="0712345678">
-            </div>
-            
-            <div class="form-group">
-                <label>Select Your Subjects</label>
-                <div class="subjects-grid" id="subjectsList">
-                    <!-- Subjects will be added here by JavaScript -->
+        <div class="header">
+            <h1>📚 KCSE Revision Hub - Complete System</h1>
+            <p>Register, select subjects, and access past papers instantly!</p>
+        </div>
+
+        <!-- Student Registration Section -->
+        <div id="registrationPanel" class="registration-panel">
+            <h2>📝 Student Registration</h2>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="fullName" placeholder="Enter your full name">
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="email" placeholder="student@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="phone" placeholder="0712345678">
                 </div>
             </div>
             
-            <button id="saveBtn">💾 SAVE CHANGES</button>
+            <label>Select Your Subjects:</label>
+            <div class="subjects-grid" id="subjectsList"></div>
+            
+            <button onclick="registerStudent()">🚀 Register & Access Library</button>
+            <div id="regMessage"></div>
         </div>
-        
-        <!-- Success Message (hidden initially) -->
-        <div id="successMessage" class="success-message hidden"></div>
-        
-        <!-- Dashboard (appears after save) -->
-        <div id="dashboard" class="dashboard hidden">
-            <h3>✅ Your Revision Dashboard</h3>
-            <p><strong>Welcome!</strong> Your subjects:</p>
-            <div id="selectedSubjectsDisplay"></div>
+
+        <!-- Main Content (Shows after registration) -->
+        <div id="mainContent" style="display: none;">
+            <div class="welcome-badge" id="welcomeMessage"></div>
+            
+            <div class="two-columns">
+                <!-- Admin Upload Panel (Hidden by default) -->
+                <div id="uploadPanel" class="upload-panel">
+                    <h2>📤 Admin Upload Panel</h2>
+                    <div class="form-group">
+                        <label>Select Subject</label>
+                        <select id="subjectSelect">
+                            <option value="MATHEMATICS">MATHEMATICS</option>
+                            <option value="ENGLISH">ENGLISH</option>
+                            <option value="KISWAHILI">KISWAHILI</option>
+                            <option value="BIOLOGY">BIOLOGY</option>
+                            <option value="CHEMISTRY">CHEMISTRY</option>
+                            <option value="PHYSICS">PHYSICS</option>
+                            <option value="HISTORY">HISTORY</option>
+                            <option value="GEOGRAPHY">GEOGRAPHY</option>
+                            <option value="CRE">CRE</option>
+                            <option value="BUSINESS">BUSINESS</option>
+                            <option value="COMPUTER STUDIES">COMPUTER STUDIES</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Select Year</label>
+                        <select id="yearSelect"></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Choose PDF File</label>
+                        <input type="file" id="pdfFile" accept=".pdf">
+                    </div>
+
+                    <button onclick="uploadPDF()">📥 Upload PDF</button>
+                    <button onclick="exportDatabase()" style="background: #28a745; margin-top: 10px;">💾 Backup Database</button>
+                    <button onclick="importDatabase()" style="background: #ffc107; color: #333; margin-top: 5px;">📂 Restore Backup</button>
+                    <div id="uploadMessage" class="message"></div>
+                </div>
+
+                <!-- Years Grid & PDF Viewer -->
+                <div class="years-panel">
+                    <div class="subject-selector">
+                        <label style="font-weight: bold;">📖 Select Subject to View (Your registered subjects):</label>
+                        <select id="viewSubjectSelect" onchange="loadYears()"></select>
+                    </div>
+
+                    <h3>📅 KCSE Years (2000 - 2027)</h3>
+                    <div id="yearsGrid" class="years-grid"></div>
+
+                    <div id="pdfViewer" class="pdf-viewer" style="display: none;">
+                        <h4>📄 Past Paper Preview</h4>
+                        <iframe id="pdfFrame" src=""></iframe>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
+    <!-- Admin Login Button -->
+    <button class="admin-toggle" onclick="showAdminPanel()">🔧 Admin Login</button>
+
     <script>
-        // List of KCSE subjects
-        const subjects = [
-            "MATHEMATICS", "ENGLISH", "KISWAHILI", "BIOLOGY", 
-            "CHEMISTRY", "PHYSICS", "HISTORY", "CRE", 
-            "BUSINESS", "COMPUTER STUDIES"
-        ];
+        // Admin password
+        const ADMIN_PASSWORD = "admin123";
         
-        // Create checkboxes for subjects
-        const subjectsList = document.getElementById('subjectsList');
-        subjects.forEach(subject => {
-            const div = document.createElement('div');
-            div.className = 'subject-item';
-            div.innerHTML = `
-                <input type="checkbox" id="subj_${subject}" value="${subject}">
-                <label for="subj_${subject}">${subject}</label>
-            `;
-            subjectsList.appendChild(div);
-        });
+        // PDF Database
+        let pdfDatabase = {};
         
-        // Get elements
-        const saveBtn = document.getElementById('saveBtn');
-        const personalInfoSection = document.getElementById('personalInfoSection');
-        const successMessage = document.getElementById('successMessage');
-        const dashboard = document.getElementById('dashboard');
-        const selectedSubjectsDisplay = document.getElementById('selectedSubjectsDisplay');
-        
-        // Save button click handler
-        saveBtn.addEventListener('click', function() {
-            // Get values
-            const fullName = document.getElementById('fullName').value.trim();
+        // Student data
+        let currentStudent = null;
+
+        // List of all subjects
+        const ALL_SUBJECTS = ["MATHEMATICS", "ENGLISH", "KISWAHILI", "BIOLOGY", "CHEMISTRY", "PHYSICS", "HISTORY", "GEOGRAPHY", "CRE", "BUSINESS", "COMPUTER STUDIES"];
+
+        // Initialize subject checkboxes
+        function initSubjectCheckboxes() {
+            const container = document.getElementById('subjectsList');
+            container.innerHTML = '';
+            ALL_SUBJECTS.forEach(subject => {
+                const div = document.createElement('div');
+                div.className = 'subject-item';
+                div.innerHTML = `
+                    <input type="checkbox" id="subj_${subject}" value="${subject}">
+                    <label for="subj_${subject}">${subject}</label>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // Register student
+        function registerStudent() {
+            const name = document.getElementById('fullName').value.trim();
             const email = document.getElementById('email').value.trim();
             const phone = document.getElementById('phone').value.trim();
             
             // Get selected subjects
             const selectedSubjects = [];
-            subjects.forEach(subject => {
+            ALL_SUBJECTS.forEach(subject => {
                 const checkbox = document.getElementById(`subj_${subject}`);
-                if (checkbox.checked) {
+                if (checkbox && checkbox.checked) {
                     selectedSubjects.push(subject);
                 }
             });
             
-            // Validate
-            if (!fullName || !email || !phone) {
-                alert('Please fill in all personal details!');
-                return;
-            }
-            
-            if (selectedSubjects.length === 0) {
-                alert('Please select at least one subject!');
+            // Validation
+            if (!name || !email || !phone) {
+                showRegMessage('Please fill in all fields!', 'error');
                 return;
             }
             
             if (!email.includes('@')) {
-                alert('Please enter a valid email address!');
+                showRegMessage('Please enter a valid email!', 'error');
                 return;
             }
             
-            // Show success message
-            successMessage.innerHTML = `✅ SUCCESS! Welcome ${fullName}! Your ${selectedSubjects.length} subject(s) have been saved.`;
-            successMessage.classList.remove('hidden');
+            if (selectedSubjects.length === 0) {
+                showRegMessage('Please select at least one subject!', 'error');
+                return;
+            }
             
-            // Hide personal information section (disappears)
-            personalInfoSection.style.display = 'none';
-            
-            // Show dashboard with selected subjects
-            dashboard.classList.remove('hidden');
-            
-            // Display selected subjects as badges
-            selectedSubjectsDisplay.innerHTML = '';
-            selectedSubjects.forEach(subject => {
-                const badge = document.createElement('span');
-                badge.className = 'subject-badge';
-                badge.textContent = subject;
-                selectedSubjectsDisplay.appendChild(badge);
-            });
-            
-            // Add welcome message with name
-            const welcomeMsg = document.createElement('p');
-            welcomeMsg.innerHTML = `<br>📧 Email: ${email}<br>📱 Phone: ${phone}`;
-            selectedSubjectsDisplay.appendChild(welcomeMsg);
-            
-            // Optional: Save to localStorage
-            const studentData = {
-                name: fullName,
+            // Save student data
+            currentStudent = {
+                name: name,
                 email: email,
                 phone: phone,
                 subjects: selectedSubjects,
-                savedAt: new Date().toISOString()
+                registeredAt: new Date().toISOString()
             };
-            localStorage.setItem('kcseStudent', JSON.stringify(studentData));
             
-            // Console log for admin
-            console.log('Student saved:', studentData);
-        });
+            localStorage.setItem('kcse_student', JSON.stringify(currentStudent));
+            
+            // Show success and hide registration
+            showRegMessage(`✅ Welcome ${name}! Redirecting to your dashboard...`, 'success');
+            
+            setTimeout(() => {
+                document.getElementById('registrationPanel').classList.add('hidden');
+                document.getElementById('mainContent').style.display = 'block';
+                document.getElementById('welcomeMessage').innerHTML = `🎓 Welcome ${name}! Your subjects: ${selectedSubjects.join(', ')}`;
+                
+                // Populate subject dropdown with only selected subjects
+                populateViewSubjects(selectedSubjects);
+                loadYears();
+            }, 1500);
+        }
         
-        // Check if student already saved (optional)
-        const savedData = localStorage.getItem('kcseStudent');
-        if (savedData) {
-            const data = JSON.parse(savedData);
-            const confirmLoad = confirm(`Welcome back ${data.name}! Load your saved dashboard?`);
-            if (confirmLoad) {
-                document.getElementById('fullName').value = data.name;
-                document.getElementById('email').value = data.email;
-                document.getElementById('phone').value = data.phone;
-                
-                data.subjects.forEach(subject => {
-                    const checkbox = document.getElementById(`subj_${subject}`);
-                    if (checkbox) checkbox.checked = true;
+        function showRegMessage(msg, type) {
+            const msgDiv = document.getElementById('regMessage');
+            msgDiv.innerHTML = `<div class="success-message" style="background: ${type === 'error' ? '#f8d7da' : '#d4edda'}; color: ${type === 'error' ? '#721c24' : '#155724'};">${msg}</div>`;
+            setTimeout(() => {
+                msgDiv.innerHTML = '';
+            }, 3000);
+        }
+        
+        // Populate view subjects dropdown with only student's selected subjects
+        function populateViewSubjects(subjects) {
+            const select = document.getElementById('viewSubjectSelect');
+            select.innerHTML = '';
+            subjects.forEach(subject => {
+                const option = document.createElement('option');
+                option.value = subject;
+                option.textContent = subject;
+                select.appendChild(option);
+            });
+        }
+
+        // PDF Database Functions
+        function loadDatabase() {
+            const saved = localStorage.getItem('kcse_pdfs');
+            if (saved) {
+                pdfDatabase = JSON.parse(saved);
+            } else {
+                ALL_SUBJECTS.forEach(subject => {
+                    pdfDatabase[subject] = {};
                 });
-                
-                // Trigger save automatically
-                saveBtn.click();
             }
         }
-    </script>
-</body>
-</html>
-  }
 
-  // show temporary feedback message in selectionFeedback div
-  function showFeedback(text, isError = false) {
-    selectionFeedback.style.display = 'block';
-    selectionFeedback.textContent = text;
-    selectionFeedback.className = `info-message ${isError ? 'error' : ''}`;
-    setTimeout(() => {
-      selectionFeedback.style.display = 'none';
-    }, 3000);
-  }
-
-  // build decorated subject tabs based on currentSelectedSubjects array
-  function renderDecoratedTabs() {
-    if (!currentSelectedSubjects.length) {
-      decoratedContainer.innerHTML = `<div class="info-message">✨ No subjects selected. Choose subjects above and click "Save".</div>`;
-      return;
-    }
-    decoratedContainer.innerHTML = '';
-    currentSelectedSubjects.forEach(subject => {
-      const tab = document.createElement('div');
-      tab.className = 'sub-tab';
-      tab.textContent = subject;
-      tab.setAttribute('data-subject', subject);
-      tab.addEventListener('click', (e) => {
-        e.stopPropagation();
-        displayYearsForSubject(subject);
-      });
-      decoratedContainer.appendChild(tab);
-    });
-  }
-
-  // generate KCSE years 2000 → 2027 as clickable buttons
-  function displayYearsForSubject(subject) {
-    yearsTitle.innerHTML = `📅 ${subject} — KCSE year tabs (click any year)`;
-    yearsWrapper.innerHTML = '';
-    const startYear = 2000;
-    const endYear = 2027;
-    for (let y = startYear; y <= endYear; y++) {
-      const yearBtn = document.createElement('button');
-      yearBtn.className = 'year-btn';
-      yearBtn.textContent = `KCSE ${y}`;
-      yearBtn.addEventListener('click', () => {
-        yearClickMsgSpan.innerHTML = `📌 Opened archive preview: <strong>${subject} | KCSE ${y}</strong> — past paper reference (demo).`;
-        setTimeout(() => {
-          if (yearClickMsgSpan.innerHTML.includes('demo')) yearClickMsgSpan.innerHTML = '';
-        }, 2200);
-      });
-      yearsWrapper.appendChild(yearBtn);
-    }
-    // scroll to top of years container
-    yearsWrapper.scrollTop = 0;
-  }
-
-  // reset years section to default message
-  function resetYearsDefault() {
-    yearsTitle.innerHTML = '📅 KCSE Year Explorer';
-    yearsWrapper.innerHTML = `<div class="info-message">Click any subject tab above to display KCSE years (2000 – 2027).</div>`;
-    yearClickMsgSpan.innerHTML = '';
-  }
-
-  // Main save action: validate details + save selected subjects → refresh UI
-  function saveProfileAndSubjects() {
-    // 1. validate name, email, phone
-    const detailsErr = areDetailsValid();
-    if (detailsErr) {
-      detailsErrorDiv.style.display = 'block';
-      detailsErrorDiv.textContent = `❌ ${detailsErr}`;
-      setTimeout(() => { detailsErrorDiv.style.display = 'none'; }, 3500);
-      return;
-    } else {
-      detailsErrorDiv.style.display = 'none';
-    }
-
-    // 2. get selected subjects from checklist
-    const chosen = getCheckedSubjects();
-    if (chosen.length === 0) {
-      showFeedback("⚠️ Please select at least one subject before saving.", true);
-      return;
-    }
-
-    // 3. update state & store optional in session for persistence on refresh
-    currentSelectedSubjects = [...chosen];
-    // store user details & subjects in sessionStorage so page refresh keeps choices
-    const userInfo = {
-      name: fullNameInput.value.trim(),
-      email: emailInput.value.trim(),
-      phone: phoneInput.value.trim()
-    };
-    sessionStorage.setItem('kcse_user_data', JSON.stringify(userInfo));
-    sessionStorage.setItem('kcse_user_subjects', JSON.stringify(currentSelectedSubjects));
-
-    // 4. refresh decorated subject tabs
-    renderDecoratedTabs();
-    // reset years container to default (since subjects changed)
-    resetYearsDefault();
-
-    showFeedback(`✅ Subjects saved (${currentSelectedSubjects.length} selected). Click any subject tab to explore KCSE years.`, false);
-  }
-
-  // load previously saved data from sessionStorage (if any)
-  function loadStoredSession() {
-    const storedUser = sessionStorage.getItem('kcse_user_data');
-    const storedSubjects = sessionStorage.getItem('kcse_user_subjects');
-    if (storedUser) {
-      try {
-        const user = JSON.parse(storedUser);
-        fullNameInput.value = user.name || '';
-        emailInput.value = user.email || '';
-        phoneInput.value = user.phone || '';
-      } catch(e) {}
-    }
-    if (storedSubjects) {
-      try {
-        const subs = JSON.parse(storedSubjects);
-        if (Array.isArray(subs) && subs.length) {
-          currentSelectedSubjects = subs;
+        function saveDatabase() {
+            localStorage.setItem('kcse_pdfs', JSON.stringify(pdfDatabase));
         }
-      } catch(e) {}
-    }
-    // re-render checklist with currentSelectedSubjects
-    renderSubjectChecklist();
-    // re-render decorated tabs
-    renderDecoratedTabs();
-    resetYearsDefault();
-  }
 
-  // optional: when the checklist changes, we do NOT auto-save; user must click "Save"
-  // but we want to reflect any pre-checked items from saved state, already done.
+        function populateYears() {
+            const yearSelect = document.getElementById('yearSelect');
+            yearSelect.innerHTML = '';
+            for (let year = 2000; year <= 2027; year++) {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                yearSelect.appendChild(option);
+            }
+        }
 
-  // initial setup
-  function init() {
-    renderSubjectChecklist();
-    loadStoredSession();   // loads saved subjects and user details, renders tabs accordingly
-    refreshBtn.addEventListener('click', saveProfileAndSubjects);
-    // also attach subtle: if user clicks any subject tab after load, it works fine.
-  }
-
-  init();
-</script>
-</body>
-</html>
-/}
-
+        function uploadPDF() {
+            const subject = document.getElementById('subjectSelect').value;
+            const year = document.getElementById('yearSelect').value;
+            const fileInput = document.getElementById('pdfFile');
+            const messageDiv = document.getElementById('uploadMessage');
+            
+            if (!fileInput.files || fileInput.files.length === 0) {
+                showUploadMessage('Please select a PDF file!', 'error');
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            if (file.type !== 'application/pdf') {
+                showUploadMessage('Please upload a valid PDF file!', 'error');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64PDF = e.target.result;
+                
+                if (!pdfDatabase[subject]) {
+                    pdfDatabase[subject] = {};
+                }
+                pdfDatabase[subject][year] = base64PDF;
+                saveDatabase();
+                
+                showUploadMessage(`✅ Successfully uploaded ${subject} ${year} past paper!`, 'success');
+                fileInput.value = '';
+                
+                const viewSubject = document.getElementById('viewSubjectSelect').value;
+                if (viewSubject === subject) {
+                    loadYears();
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        function showUploadMessage(msg, type) {
+            const messageDiv = document.getElementById('uploadMessage');
+            messageDiv.textContent = msg;
+            messageDiv.className = `message ${type}`;
+            setTimeout(() => {
+                messageDiv.className = 'message';
+            }, 3000);
+        }
+        
+        function loadYears() {
+            const subject = document.getElementById('viewSubjectSelect').value;
+            if (!subject) return;
+            
+            const yearsGrid = document.getElementById('yearsGrid');
+            const pdfViewer = document.getElementById('pdfViewer');
+            
+            pdfViewer.style.display = 'none';
+            yearsGrid.innerHTML = '';
+            
+            for (let year = 2000; year <= 2027; year++) {
+                const hasPDF = pdfDatabase[subject] && pdfDatabase[subject][year];
+                const yearCard = document.createElement('div');
+                yearCard.className = 'year-card' + (hasPDF ? ' has-pdf' : '');
+                yearCard.innerHTML = `
+                    <div class="year-number">${year}</div>
+                    ${hasPDF ? '<div class="pdf-badge">📄 PDF Available</div>' : '<div class="pdf-badge">❌ No PDF</div>'}
+                    <button class="delete-btn" onclick="deletePDF('${subject}', ${year}, event)">✖</button>
+                `;
+                
+                yearCard.onclick = (function(y) {
+                    return function() {
+                  
+                                      
