@@ -1,591 +1,641 @@
 <h1> ACE NOTES LIBRARY</h1>
-<!DOCTYPE html>
+
+                   <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>KCSE Revision Hub | OTP Secure Dashboard & Past Papers</title>
+  <title>EduTabs | Subject Selector & KCSE Archive</title>
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Inter', system-ui, 'Segoe UI', 'Roboto', sans-serif;
+      font-family: 'Segoe UI', 'Poppins', system-ui, 'Inter', sans-serif;
     }
 
     body {
-      background: radial-gradient(circle at 10% 30%, #eef2f9, #cbdbe9);
       min-height: 100vh;
-      padding: 2rem;
-      animation: fadeIn 0.5s ease;
+      background: linear-gradient(145deg, #f6f9fc 0%, #eef2f5 100%);
+      padding: 2rem 1.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    .dashboard {
+    /* decorative glassmorphic container */
+    .app-container {
       max-width: 1400px;
-      margin: 0 auto;
-      background: rgba(255, 255, 255, 0.96);
-      border-radius: 2.5rem;
-      box-shadow: 0 35px 55px -20px rgba(0, 0, 0, 0.4);
-      overflow: hidden;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(2px);
+      border-radius: 3rem;
+      box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.05);
+      padding: 1.8rem 2.2rem;
+      transition: all 0.2s ease;
+      border: 1px solid rgba(255,255,240,0.6);
     }
 
-    /* welcome & steps */
-    .welcome-block {
-      background: linear-gradient(125deg, #0a2540 0%, #1f4e6e 100%);
-      padding: 2rem 2.8rem;
-      color: white;
-      border-bottom: 4px solid #ffcd6b;
-    }
-
-    .welcome-text h1 {
-      font-size: 2.4rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, #FFF8E7, #FFE5A3);
+    /* headings highlighted */
+    h1, h2, h3 {
+      background: linear-gradient(135deg, #1E2F5E, #2B4C7C);
       background-clip: text;
       -webkit-background-clip: text;
       color: transparent;
-      margin-bottom: 0.5rem;
+      letter-spacing: -0.3px;
+      border-left: 5px solid #f4b942;
+      padding-left: 1rem;
+      margin: 0.5rem 0 1rem 0;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.02);
     }
 
-    .welcome-text p {
-      font-size: 1rem;
-      opacity: 0.92;
-      max-width: 80%;
+    h1 {
+      font-size: 2.1rem;
+      font-weight: 700;
+      border-left-width: 6px;
     }
 
-    /* cards */
-    .form-card {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(12px);
+    h2 {
+      font-size: 1.6rem;
+    }
+
+    h3 {
+      font-size: 1.3rem;
+    }
+
+    /* card style */
+    .form-card, .selection-panel, .subjects-tab-area, .years-area {
+      background: white;
       border-radius: 2rem;
-      padding: 1.5rem 2rem;
-      margin-top: 1.5rem;
-      border: 1px solid rgba(255,255,255,0.35);
-    }
-
-    .form-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-      margin-bottom: 1.2rem;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.08);
+      transition: transform 0.2s;
+      border: 1px solid #e9edf2;
     }
 
     .form-group {
-      flex: 1 1 220px;
+      margin-bottom: 1.2rem;
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 0.4rem;
     }
 
-    .form-group label {
-      font-weight: 700;
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      opacity: 0.9;
-    }
-
-    .form-group input {
-      background: white;
-      border: none;
-      padding: 0.8rem 1.2rem;
-      border-radius: 2.2rem;
-      font-size: 0.95rem;
-      font-weight: 500;
-      color: #0b2f5c;
-      outline: none;
-      transition: 0.2s;
-    }
-
-    .form-group input:focus {
-      box-shadow: 0 0 0 3px #ffcd6b;
-    }
-
-    .btn-gold {
-      background: linear-gradient(115deg, #ffcd6b, #ffb347);
-      border: none;
-      padding: 0.75rem 1.8rem;
-      border-radius: 3rem;
-      font-weight: 800;
+    label {
+      font-weight: 600;
+      color: #1f3a5f;
       font-size: 0.9rem;
-      color: #1e293b;
+      letter-spacing: 0.3px;
+    }
+
+    input, textarea {
+      padding: 0.85rem 1rem;
+      border-radius: 1.5rem;
+      border: 1.5px solid #dfe6ed;
+      background: #ffffff;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+      outline: none;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #f4b942;
+      box-shadow: 0 0 0 3px rgba(244, 185, 66, 0.2);
+    }
+
+    button, .tab-btn, .year-tab {
+      background: linear-gradient(110deg, #1f3e6b, #2b4f7c);
+      border: none;
+      color: white;
+      font-weight: 600;
+      padding: 0.7rem 1.5rem;
+      border-radius: 3rem;
       cursor: pointer;
       transition: 0.2s;
-      box-shadow: 0 6px 12px -6px rgba(0,0,0,0.3);
+      font-size: 0.9rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+      letter-spacing: 0.3px;
     }
 
-    .btn-gold:hover {
-      transform: scale(1.01);
-      background: linear-gradient(115deg, #ffdd88, #ffa82e);
+    button:hover, .tab-btn:hover, .year-tab:hover {
+      background: linear-gradient(110deg, #143256, #1f4168);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
     }
 
-    .otp-section, .subject-selection-area, .dashboard-main-area {
+    .secondary-btn {
+      background: linear-gradient(110deg, #5a6e7c, #4c5e6b);
+    }
+
+    .danger-btn {
+      background: linear-gradient(110deg, #9e2d2f, #b83c3e);
+    }
+
+    .flex-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .subjects-check-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      margin: 1rem 0;
+    }
+
+    .subject-check {
+      background: #f0f4fa;
+      padding: 0.5rem 1.2rem;
+      border-radius: 3rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      cursor: pointer;
+      transition: 0.1s;
+      font-weight: 500;
+      border: 1px solid #dce3ec;
+    }
+
+    .subject-check input {
+      width: 1.2rem;
+      height: 1.2rem;
+      accent-color: #f4b942;
+      margin: 0;
+      transform: scale(1);
+    }
+
+    /* decorated subject tabs (colored and fancy) */
+    .decorated-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin: 1rem 0 0.5rem;
+    }
+
+    .subject-tab {
+      background: linear-gradient(125deg, #ffe6c7, #ffd9af);
+      color: #3b2a1f;
+      font-weight: bold;
+      padding: 0.8rem 1.8rem;
+      border-radius: 2rem;
+      cursor: pointer;
       transition: all 0.2s;
+      box-shadow: 0 5px 12px rgba(0, 0, 0, 0.08);
+      border: 1px solid #ffcd94;
+      font-size: 1rem;
+      letter-spacing: 0.3px;
+    }
+
+    .subject-tab:hover {
+      background: linear-gradient(125deg, #ffdead, #ffcf8a);
+      transform: scale(0.98);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+    }
+
+    .year-tabs-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      margin-top: 1rem;
+    }
+
+    .year-tab {
+      background: linear-gradient(145deg, #eaeef3, #dfe6ed);
+      color: #1f3a5f;
+      font-weight: 600;
+      padding: 0.5rem 1rem;
+      border-radius: 2rem;
+      font-size: 0.85rem;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      border: none;
+    }
+
+    .year-tab:hover {
+      background: #f4b942;
+      color: #1e2f3e;
+      transform: translateY(-2px);
+    }
+
+    .info-message {
+      background: #eef3fc;
+      padding: 0.8rem 1rem;
+      border-radius: 1.5rem;
+      color: #2c5270;
+      font-size: 0.9rem;
+      border-left: 4px solid #f4b942;
+      margin: 0.5rem 0;
+    }
+
+    .error-text {
+      color: #c7362b;
+      font-size: 0.8rem;
+      margin-top: 0.3rem;
+    }
+
+    hr {
+      margin: 1rem 0;
+      border: none;
+      height: 2px;
+      background: linear-gradient(90deg, #e2e8f0, #f4b942, #e2e8f0);
     }
 
     .hidden {
       display: none;
     }
 
-    .checkbox-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.8rem;
-      background: rgba(0,0,0,0.2);
-      padding: 1rem 1.2rem;
-      border-radius: 2rem;
-      margin-top: 0.5rem;
+    .active-section {
+      display: block;
     }
 
-    .checkbox-grid label {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: #2c3f5c;
-      padding: 0.5rem 1.2rem;
-      border-radius: 3rem;
+    .link-like {
+      background: none;
+      color: #2b4f7c;
+      box-shadow: none;
+      text-decoration: underline;
+      font-weight: 500;
+      padding: 0.2rem 0.5rem;
       font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
     }
 
-    .checkbox-grid label:hover {
-      background: #ffcd6b;
-      color: #1e293b;
-      transform: translateY(-2px);
+    .link-like:hover {
+      background: none;
+      transform: none;
+      color: #f4b942;
     }
 
-    .checkbox-grid input {
-      width: 18px;
-      height: 18px;
-      accent-color: #ffcd6b;
-    }
-
-    .message-banner {
-      margin-top: 1rem;
-      font-size: 0.85rem;
-      font-weight: 600;
-      background: #1e2f44;
-      display: inline-block;
-      padding: 0.5rem 1.5rem;
-      border-radius: 60px;
-      color: #ffecb3;
-    }
-
-    .subjects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-      gap: 1.4rem;
-      padding: 2rem 2.5rem;
-      background: #ffffff;
-      border-bottom: 2px solid rgba(0,0,0,0.05);
-    }
-
-    .subject-tab {
-      font-size: 1.3rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      padding: 1.2rem 0.5rem;
-      border: none;
-      border-radius: 2rem;
-      cursor: pointer;
-      transition: 0.2s;
+    footer {
       text-align: center;
-      box-shadow: 0 12px 18px -10px rgba(0,0,0,0.25);
+      font-size: 0.75rem;
+      margin-top: 2rem;
+      color: #6c7e94;
     }
-
-    /* subject colors */
-    .subject-tab[data-subj="MATHEMATICS"] { background: #1e3a8a; color: white; }
-    .subject-tab[data-subj="ENGLISH"] { background: #0f5b3a; color: white; }
-    .subject-tab[data-subj="KISWAHILI"] { background: #b45309; color: white; }
-    .subject-tab[data-subj="BIOLOGY"] { background: #15803d; color: white; }
-    .subject-tab[data-subj="CHEMISTRY"] { background: #6b21a5; color: white; }
-    .subject-tab[data-subj="PHYSICS"] { background: #4338ca; color: white; }
-    .subject-tab[data-subj="HISTORY"] { background: #c2410c; color: white; }
-    .subject-tab[data-subj="CRE"] { background: #be185d; color: white; }
-    .subject-tab[data-subj="BUSINESS"] { background: #0f766e; color: white; }
-    .subject-tab[data-subj="COMPUTER STUDIES"] { background: #7c3aed; color: white; }
-
-    .subject-tab:hover {
-      transform: translateY(-6px) scale(1.02);
-      filter: brightness(1.1);
-    }
-
-    .years-section {
-      background: #fefbf5;
-      padding: 0.5rem 2.5rem 2rem 2.5rem;
-      border-top: 1px solid #ffe4bc;
-    }
-
-    .years-header {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      margin-bottom: 1rem;
-    }
-
-    .years-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.8rem;
-      max-height: 280px;
-      overflow-y: auto;
-      padding: 0.5rem 0;
-    }
-
-    .year-tab {
-      background: linear-gradient(135deg, #2b4f7c, #1f3c5c);
-      color: white;
-      font-weight: 700;
-      padding: 0.6rem 1.2rem;
-      border-radius: 3rem;
-      border: none;
-      cursor: pointer;
-      transition: 0.2s;
-      min-width: 100px;
-    }
-
-    .year-tab:hover {
-      background: #ff914d;
-      transform: translateY(-3px);
-    }
-
-    .active-subject {
-      outline: 4px solid #ffcd6b;
-      transform: scale(1.02);
-    }
-
-    .click-feedback {
-      background: #f1f6fd;
-      padding: 0.8rem;
-      border-radius: 48px;
-      margin-top: 1rem;
-      font-weight: 600;
-      text-align: center;
-    }
-
-    .footer {
-      font-size: 0.8rem;
-      text-align: center;
-      padding: 1.2rem;
-      background: #11212e;
-      color: #cddcec;
-    }
-
-    @media (max-width: 720px) {
-      body { padding: 1rem; }
-      .subjects-grid { padding: 1rem; grid-template-columns: repeat(auto-fill, minmax(140px,1fr));}
-      .subject-tab { font-size: 1rem; padding: 0.8rem 0.2rem;}
+    @media (max-width: 700px) {
+      .app-container {
+        padding: 1.2rem;
+      }
+      .subject-tab, .year-tab {
+        padding: 0.5rem 1rem;
+      }
     }
   </style>
 </head>
 <body>
-<div class="dashboard" id="dashboardContainer">
-  <div class="welcome-block">
-    <div class="welcome-text">
-      <h1>📚 KCSE SMART REVISION HUB</h1>
-      <p>🔐 OTP verification • Personalized subjects • Past papers 2000–2027 • Real-time coach alerts</p>
+<div class="app-container" id="appRoot">
+  <!-- REGISTRATION & LOGIN SECTION (visible by default) -->
+  <div id="authSection">
+    <h1>📘 KCSE Subject Portal</h1>
+    <div class="flex-row" style="justify-content: flex-start; gap: 1rem; margin-bottom: 1rem;">
+      <button id="showRegBtn" class="secondary-btn" style="background:#1f3e6b;">Register</button>
+      <button id="showLoginBtn" class="secondary-btn" style="background:#3c5e7e;">Log In</button>
+    </div>
+    <!-- Registration Form -->
+    <div id="regForm" class="form-card">
+      <h2>✍️ Create account</h2>
+      <div class="form-group">
+        <label>Full Names</label>
+        <input type="text" id="regName" placeholder="e.g., Alex Mwangi" autocomplete="name">
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="regEmail" placeholder="student@example.com">
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" id="regPhone" placeholder="+2547xxxxxxxx">
+      </div>
+      <div class="form-group">
+        <label>Set Password</label>
+        <input type="password" id="regPassword" placeholder="••••••">
+      </div>
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <input type="password" id="regConfirm" placeholder="••••••">
+      </div>
+      <div class="flex-row">
+        <button id="registerBtn">Register & Continue</button>
+      </div>
+      <div id="regError" class="error-text"></div>
     </div>
 
-    <!-- STEP 1: student details + OTP request -->
-    <div class="form-card" id="stepDetailsCard">
-      <div class="form-row">
-        <div class="form-group">
-          <label>📛 FULL NAME</label>
-          <input type="text" id="fullName" placeholder="e.g. Aisha Wanjiku">
-        </div>
-        <div class="form-group">
-          <label>📧 EMAIL ADDRESS</label>
-          <input type="email" id="emailAddr" placeholder="student@kcse.com">
-        </div>
-        <div class="form-group">
-          <label>📱 PHONE NUMBER</label>
-          <input type="tel" id="phoneNum" placeholder="0712345678">
-        </div>
+    <!-- Login Form -->
+    <div id="loginForm" class="form-card hidden">
+      <h2>🔐 Login to Dashboard</h2>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="loginEmail" placeholder="your@email.com">
       </div>
-      <button id="requestOtpBtn" class="btn-gold">📨 REQUEST OTP (verify identity)</button>
-      <div id="stepDetailsMessage" class="message-banner" style="margin-top:12px;"></div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="loginPassword" placeholder="••••••">
+      </div>
+      <div class="flex-row">
+        <button id="loginBtn">Log In</button>
+        <button id="forgotPwdLink" class="link-like" type="button">🔑 Forgot password? → Send reset ticket</button>
+      </div>
+      <div id="loginError" class="error-text"></div>
     </div>
 
-    <!-- STEP 2: OTP verification panel (hidden initially) -->
-    <div id="otpPanel" class="form-card hidden">
-      <div class="form-row">
-        <div class="form-group" style="flex:2">
-          <label>🔑 ENTER 6-DIGIT OTP</label>
-          <input type="text" id="otpCode" placeholder="e.g. 482391" maxlength="6" autocomplete="off">
-        </div>
-        <div class="form-group" style="flex:0.5; justify-content: flex-end;">
-          <button id="verifyOtpBtn" class="btn-gold">✅ VERIFY OTP</button>
-        </div>
+    <!-- Forgot Password Ticket Modal / inline hidden -->
+    <div id="forgotTicketPanel" class="form-card hidden" style="background:#fef7e8;">
+      <h3>📧 Password Reset Ticket</h3>
+      <p>Write a short message & send an email request to <strong>Nyakundi1759@gmail.com</strong></p>
+      <div class="form-group">
+        <label>Your Email (for ticket)</label>
+        <input type="email" id="ticketEmail" placeholder="student@example.com">
       </div>
-      <div id="otpMessage" class="message-banner"></div>
-    </div>
-
-    <!-- STEP 3: Subject selection (visible after OTP) -->
-    <div id="subjectSelectionArea" class="form-card hidden">
-      <div class="subjects-check-group">
-        <label style="font-weight:800; background:rgba(255,255,210,0.3); padding:0.2rem 1rem; border-radius:40px;">✏️ SELECT YOUR KCSE SUBJECTS (you can revise these only)</label>
-        <div class="checkbox-grid" id="subjectsChecklist"></div>
+      <div class="form-group">
+        <label>Additional details / request</label>
+        <textarea rows="2" id="ticketMsg" placeholder="I forgot my password, please reset my account..."></textarea>
       </div>
-      <button id="confirmSubjectsBtn" class="btn-gold" style="margin-top:1.2rem;">📢 CONFIRM & NOTIFY COACH → ACTIVATE DASHBOARD</button>
-      <div id="subjectConfirmMessage" class="message-banner"></div>
+      <div class="flex-row">
+        <button id="sendTicketBtn">✉️ Compose & Send Email Ticket</button>
+        <button id="closeTicketBtn" class="secondary-btn">Cancel</button>
+      </div>
+      <div id="ticketInfo" class="info-message"></div>
     </div>
   </div>
 
-  <!-- DASHBOARD AFTER ACTIVATION (subject tabs + years) -->
-  <div id="dashboardMain" class="hidden">
-    <div id="dynamicSubjectGrid" class="subjects-grid"></div>
-    <div id="dynamicYearsSection" class="years-section">
-      <div class="years-header">
-        <h2>📅 KCSE PAST PAPERS (2000 – 2027)</h2>
-        <span class="year-badge" style="background:#1e2f44; color:#ffecb3; padding:0.3rem 1rem; border-radius:40px;">Click a year → PDF ready soon</span>
+  <!-- MAIN APP (after successful login) -->
+  <div id="mainAppSection" class="hidden">
+    <div class="flex-row" style="margin-bottom: 0.5rem;">
+      <h1>📌 Welcome, <span id="userNameDisplay">Learner</span></h1>
+      <button id="logoutBtn" class="danger-btn" style="background:#aa2e2e;">Logout</button>
+    </div>
+    <hr>
+
+    <!-- Subject Picker (multi-selection) -->
+    <div class="selection-panel">
+      <h2>📚 Choose Your Subjects</h2>
+      <div id="subjectChecklist" class="subjects-check-group"></div>
+      <div class="flex-row">
+        <button id="saveSubjectsBtn">✅ Save Selected Subjects</button>
+        <span class="info-message" style="margin:0;">Click on any subject tab below to see KCSE years</span>
       </div>
-      <div id="yearsGrid" class="years-grid"></div>
-      <div class="click-feedback" id="yearClickFeedback">✨ Select a subject above, then tap any year to preview past paper (PDF uploads coming).</div>
+    </div>
+
+    <!-- Decorated Subject Tabs (only selected) -->
+    <div class="subjects-tab-area">
+      <h3>⭐ Your Subject Tabs (click to explore years)</h3>
+      <div id="selectedSubjectsTabsContainer" class="decorated-tabs">
+        <div class="info-message">No subjects selected yet. Choose from above and save.</div>
+      </div>
+    </div>
+
+    <!-- Years Display Section (Dynamic based on subject click) -->
+    <div class="years-area">
+      <h3 id="yearHeader">📅 KCSE Year Tabs</h3>
+      <div id="yearsContainer" class="year-tabs-container">
+        <div class="info-message">Click on any subject tab above to view years (2000 - 2027).</div>
+      </div>
     </div>
   </div>
-
-  <div class="footer">
-    📡 Coach Nyakundi gets SMS + Email after subject selection | Secure OTP | KCSE 2000-2027 archive
-  </div>
+  <footer>✨ Decorative academic hub — highlight your subjects & past papers archive</footer>
 </div>
 
 <script>
-  // ---------- CONSTANTS ----------
-  const ALL_SUBJECTS = ["MATHEMATICS", "ENGLISH", "KISWAHILI", "BIOLOGY", "CHEMISTRY", "PHYSICS", "HISTORY", "CRE", "BUSINESS", "COMPUTER STUDIES"];
-  let generatedOtp = null;
-  let verifiedStudent = { name: "", email: "", phone: "" };
-  let selectedSubjectsFinal = [];
-  let currentActiveSubject = "";
-  
-  // DOM elements
-  const stepDetailsCard = document.getElementById('stepDetailsCard');
-  const otpPanel = document.getElementById('otpPanel');
-  const subjectSelectionArea = document.getElementById('subjectSelectionArea');
-  const dashboardMain = document.getElementById('dashboardMain');
-  const requestOtpBtn = document.getElementById('requestOtpBtn');
-  const verifyOtpBtn = document.getElementById('verifyOtpBtn');
-  const confirmSubjectsBtn = document.getElementById('confirmSubjectsBtn');
-  const fullNameInp = document.getElementById('fullName');
-  const emailInp = document.getElementById('emailAddr');
-  const phoneInp = document.getElementById('phoneNum');
-  const otpCodeInp = document.getElementById('otpCode');
-  const stepDetailsMessage = document.getElementById('stepDetailsMessage');
-  const otpMessage = document.getElementById('otpMessage');
-  const subjectConfirmMessage = document.getElementById('subjectConfirmMessage');
-  const subjectsChecklistDiv = document.getElementById('subjectsChecklist');
-  const dynamicSubjectGrid = document.getElementById('dynamicSubjectGrid');
-  const yearsGridDiv = document.getElementById('yearsGrid');
-  const yearClickFeedback = document.getElementById('yearClickFeedback');
+  // ---------- DATA MODELS ----------
+  // Subject master list (deduplicate KISWAHILI appears twice? using Set)
+  const MASTER_SUBJECTS = [
+    "MATHEMATICS", "ENGLISH", "KISWAHILI", "BIOLOGY", "CHEMISTRY",
+    "PHYSICS", "HISTORY", "CRE", "BUSINESS", "COMPUTER STUDIES", "GEOGRAPHY"
+  ];
 
-  // Build subject checkboxes (all unchecked by default)
-  function buildSubjectCheckboxes() {
-    subjectsChecklistDiv.innerHTML = '';
-    ALL_SUBJECTS.forEach(sub => {
-      const label = document.createElement('label');
-      const cb = document.createElement('input');
-      cb.type = 'checkbox';
+  // Storage keys
+  const STORAGE_USERS = "kcse_portal_users";
+  const SESSION_EMAIL = "kcse_logged_user_email";
+
+  // Helper: Load users from localStorage
+  function getUsers() {
+    const data = localStorage.getItem(STORAGE_USERS);
+    if (!data) return [];
+    return JSON.parse(data);
+  }
+
+  function saveUsers(users) {
+    localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
+  }
+
+  // get current logged user email
+  function getCurrentUserEmail() {
+    return sessionStorage.getItem(SESSION_EMAIL);
+  }
+
+  function setCurrentUserEmail(email) {
+    if (email) sessionStorage.setItem(SESSION_EMAIL, email);
+    else sessionStorage.removeItem(SESSION_EMAIL);
+  }
+
+  // retrieve full user object
+  function getCurrentUser() {
+    const email = getCurrentUserEmail();
+    if (!email) return null;
+    const users = getUsers();
+    return users.find(u => u.email === email) || null;
+  }
+
+  // update user subjects
+  function updateUserSubjects(email, selectedSubjectsArray) {
+    let users = getUsers();
+    const index = users.findIndex(u => u.email === email);
+    if (index !== -1) {
+      users[index].selectedSubjects = [...selectedSubjectsArray];
+      saveUsers(users);
+      return true;
+    }
+    return false;
+  }
+
+  // registration logic
+  function registerUser(name, email, phone, password, confirm) {
+    if (!name.trim()) return "Full name required";
+    if (!email.trim()) return "Email required";
+    if (!phone.trim()) return "Phone number required";
+    if (!password) return "Set a password";
+    if (password !== confirm) return "Passwords do not match";
+    if (password.length < 4) return "Password must be at least 4 characters";
+    const users = getUsers();
+    if (users.find(u => u.email === email)) return "Email already registered. Please login.";
+    const newUser = {
+      name: name.trim(),
+      email: email.trim(),
+      phone: phone.trim(),
+      password: password,
+      selectedSubjects: []    // initially empty
+    };
+    users.push(newUser);
+    saveUsers(users);
+    return null;
+  }
+
+  function loginUser(email, password) {
+    const users = getUsers();
+    const user = users.find(u => u.email === email && u.password === password);
+    if (!user) return "Invalid email or password";
+    setCurrentUserEmail(email);
+    return null;
+  }
+
+  // ----- RENDER SUBJECT CHECKLIST (multi-select) -----
+  function renderSubjectChecklist(selectedSubjects = []) {
+    const container = document.getElementById("subjectChecklist");
+    if (!container) return;
+    container.innerHTML = "";
+    MASTER_SUBJECTS.forEach(sub => {
+      const isChecked = selectedSubjects.includes(sub);
+      const label = document.createElement("label");
+      label.className = "subject-check";
+      const cb = document.createElement("input");
+      cb.type = "checkbox";
       cb.value = sub;
-      cb.name = 'kcse_subject';
-      cb.checked = false;
+      cb.checked = isChecked;
+      const span = document.createElement("span");
+      span.innerText = sub;
       label.appendChild(cb);
-      label.appendChild(document.createTextNode(sub));
-      subjectsChecklistDiv.appendChild(label);
+      label.appendChild(span);
+      container.appendChild(label);
     });
   }
 
-  // Helper: send OTP simulation (via email/phone alert)
-  function sendOtpToStudent(email, phone) {
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    generatedOtp = otp;
-    // Simulate sending: show alert + console (real integration would use SMS/email gateway)
-    alert(`📲 SIMULATION: OTP ${otp} sent to ${email} & ${phone}. (Demo: use this code to verify)`);
-    stepDetailsMessage.innerHTML = `✅ OTP sent! Check your email/phone (demo code: ${otp}) . Enter it below.`;
-    stepDetailsMessage.style.background = "#2c5a2e";
-    return otp;
-  }
-
-  // Request OTP: validate fields first
-  function onRequestOtp() {
-    const name = fullNameInp.value.trim();
-    const email = emailInp.value.trim();
-    const phone = phoneInp.value.trim();
-    if (!name || !email || !phone) {
-      stepDetailsMessage.innerHTML = "❌ All fields (Full name, Email, Phone) are mandatory!";
-      stepDetailsMessage.style.background = "#8b3c3c";
-      return;
-    }
-    if (!email.includes('@') || !email.includes('.')) {
-      stepDetailsMessage.innerHTML = "❌ Provide valid email address.";
-      return;
-    }
-    if (phone.length < 9) {
-      stepDetailsMessage.innerHTML = "❌ Valid phone number required (e.g., 0712345678).";
-      return;
-    }
-    // store temp student data
-    verifiedStudent = { name, email, phone };
-    // generate & "send" otp
-    sendOtpToStudent(email, phone);
-    // show OTP panel
-    otpPanel.classList.remove('hidden');
-    stepDetailsMessage.innerHTML = "📨 OTP sent! Enter verification code below.";
-    stepDetailsMessage.style.background = "#1e2f44";
-    otpCodeInp.value = '';
-    otpMessage.innerHTML = '';
-  }
-
-  // Verify OTP
-  function onVerifyOtp() {
-    const enteredOtp = otpCodeInp.value.trim();
-    if (!generatedOtp) {
-      otpMessage.innerHTML = "⚠️ No OTP request found. Click 'REQUEST OTP' first.";
-      return;
-    }
-    if (enteredOtp === generatedOtp) {
-      otpMessage.innerHTML = "✅ OTP verified successfully! Now select your KCSE subjects.";
-      otpMessage.style.background = "#0f6e3f";
-      // hide OTP panel, show subject selection
-      otpPanel.classList.add('hidden');
-      subjectSelectionArea.classList.remove('hidden');
-      // Build subject checklist fresh
-      buildSubjectCheckboxes();
-    } else {
-      otpMessage.innerHTML = "❌ Invalid OTP. Please try again or request new OTP.";
-      otpMessage.style.background = "#a13e3e";
-    }
-  }
-
-  // ------------- ADMIN NOTIFICATION (email + SMS simulation) -------------
-  async function notifyAdmin(studentName, studentEmail, studentPhone, subjectsList) {
-    const adminEmail = "nyakundi1759@yahoo.com";
-    const adminPhoneIntl = "+254742666179";
-    const subjectStr = subjectsList.join(", ");
-    const messageText = `📢 NEW KCSE STUDENT: ${studentName} (${studentEmail}) | Phone: ${studentPhone} | Subjects: ${subjectStr} | Dashboard activated.`;
-    
-    // 1) Email via FormSubmit (no-captcha)
-    let emailOk = false;
-    try {
-      const formData = new FormData();
-      formData.append("name", studentName);
-      formData.append("email", studentEmail);
-      formData.append("phone", studentPhone);
-      formData.append("subjects", subjectStr);
-      formData.append("_subject", `🎓 KCSE Registration: ${studentName} (${subjectsList.length} subjects)`);
-      formData.append("_captcha", "false");
-      const emailRes = await fetch("https://formsubmit.co/ajax/" + adminEmail, {
-        method: "POST",
-        body: formData,
-        headers: { 'Accept': 'application/json' }
-      });
-      emailOk = emailRes.ok;
-    } catch (err) {
-      console.warn("Email send fallback:", err);
-    }
-    
-    // 2) SMS simulation (textbelt demo key with fallback simulation)
-    let smsStatus = "simulated";
-    try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 7000);
-      const smsResponse = await fetch("https://textbelt.com/text", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({
-          phone: adminPhoneIntl,
-          message: messageText.substring(0, 280),
-          key: "textbelt"
-        }),
-        signal: controller.signal
-      });
-      clearTimeout(timeoutId);
-      const data = await smsResponse.json();
-      if (data.success) smsStatus = "delivered (real SMS)";
-      else smsStatus = "demo quota reached, simulated SMS logged";
-    } catch (err) {
-      smsStatus = "simulated (gateway offline)";
-    }
-    
-    return { emailOk, smsStatus };
-  }
-
-  // after subject selection confirmed => notify admin & build dashboard
-  async function onConfirmSubjects() {
-    // gather selected subjects
-    const checkboxes = document.querySelectorAll('#subjectsChecklist input[type="checkbox"]');
+  // Get currently selected subjects from checklist (live)
+  function getSelectedSubjectsFromChecklist() {
+    const checkboxes = document.querySelectorAll("#subjectChecklist input[type='checkbox']");
     const selected = [];
     checkboxes.forEach(cb => {
       if (cb.checked) selected.push(cb.value);
     });
-    if (selected.length === 0) {
-      subjectConfirmMessage.innerHTML = "❌ Please select at least one KCSE subject to revise!";
-      subjectConfirmMessage.style.background = "#a13e3e";
-      return;
-    }
-    selectedSubjectsFinal = [...selected];
-    const { name, email, phone } = verifiedStudent;
-    if (!name || !email || !phone) {
-      subjectConfirmMessage.innerHTML = "⚠️ Missing student details, please restart OTP process.";
-      return;
-    }
-    
-    subjectConfirmMessage.innerHTML = "⏳ Sending info to coach Nyakundi & activating dashboard...";
-    subjectConfirmMessage.style.background = "#2c3e50";
-    
-    // notify admin
-    const notifyResult = await notifyAdmin(name, email, phone, selectedSubjectsFinal);
-    let notifyMsg = `📢 Coach notified! ${notifyResult.emailOk ? 'Email sent ✓' : 'Email attempted'} | SMS: ${notifyResult.smsStatus}.`;
-    subjectConfirmMessage.innerHTML = `✅ Subjects saved. ${notifyMsg} Dashboard ready.`;
-    subjectConfirmMessage.style.background = "#0f6e3f";
-    
-    // hide subject selection area, show dashboard main
-    subjectSelectionArea.classList.add('hidden');
-    dashboardMain.classList.remove('hidden');
-    
-    // build subject tabs (only selected ones)
-    buildSubjectTabs(selectedSubjectsFinal);
-    // set first subject as active and load years
-    if (selectedSubjectsFinal.length > 0) {
-      currentActiveSubject = selectedSubjectsFinal[0];
-      highlightActiveSubject(currentActiveSubject);
-      renderYearsForSubject(currentActiveSubject);
-    }
-    
-    // update global feedback
-    const globalFeedDiv = document.querySelector('#yearClickFeedback');
-    if (globalFeedDiv) globalFeedDiv.innerHTML = `🎯 Welcome ${name.split(' ')[0]}! Click any subject tab above then pick a year to access past papers.`;
+    return selected;
   }
-  
-  // Build colored subject tabs (revision dashboard)
-  function buildSubjectTabs(subjectsArray) {
-    dynamicSubjectGrid.innerHTML = '';
-    subjectsArray.forEach(subj => {
-      const tab = document.createElement('button');
-      tab.className = 'subject-tab';
-      tab.setAttribute('data-subj', subj);
-      tab.textContent = subj;
-      tab.addEventListener('click', (e) => {
+
+  // Render decorated subject tabs (colored tabs) based on selected subjects array
+  function renderSelectedSubjectsTabs(subjectsArray) {
+    const container = document.getElementById("selectedSubjectsTabsContainer");
+    if (!container) return;
+    if (!subjectsArray.length) {
+      container.innerHTML = `<div class="info-message">✨ No subjects selected. Pick your favourite subjects above and save.</div>`;
+      return;
+    }
+    container.innerHTML = "";
+    subjectsArray.forEach(subject => {
+      const tab = document.createElement("div");
+      tab.className = "subject-tab";
+      tab.innerText = subject;
+      tab.setAttribute("data-subject", subject);
+      tab.addEventListener("click", (e) => {
         e.stopPropagation();
-        currentActiveSubject = subj;
-        // update active visual
-        document.querySelectorAll('.subject-tab').forEach(btn => btn.classList.remove('active-subject'));
-        tab.classList.add('active-subject');
-        renderYearsForSubject(subj);
-        // feedback update
-        const feedDiv = document.getElementById('yearClickFeedback');
-        if (feedDiv) feedDiv.innerHTML = `📘 ACTIVE: ${subj} — Click any year (2000–2027) to open past paper.`;
+        displayYearsForSubject(subject);
       });
-      dynamicSubjectGrid.appendChild(tab);
+      container.appendChild(tab);
     });
   }
-  
-  function highlightActiveSubject(subject) {
-    const tabs = document.querySelectorAll('.subject-tab');
-    tabs.forEach(t                  
+
+  // Generate years 2000 .. 2027, display decorated clickable year tabs
+  function displayYearsForSubject(subject) {
+    const yearsContainer = document.getElementById("yearsContainer");
+    const yearHeader = document.getElementById("yearHeader");
+    if (!yearsContainer) return;
+    yearHeader.innerHTML = `📅 ${subject} — KCSE Year Archive (click any year)`;
+    yearsContainer.innerHTML = "";
+    const startYear = 2000;
+    const endYear = 2027;
+    for (let y = startYear; y <= endYear; y++) {
+      const yearBtn = document.createElement("button");
+      yearBtn.className = "year-tab";
+      yearBtn.innerText = `KCSE ${y}`;
+      yearBtn.setAttribute("data-year", y);
+      yearBtn.setAttribute("data-subject", subject);
+      yearBtn.addEventListener("click", () => {
+        // show interactive decorative click feedback
+        const infoDiv = document.getElementById("yearClickFeedback");
+        if (!infoDiv) {
+          const feed = document.createElement("div");
+          feed.id = "yearClickFeedback";
+          feed.className = "info-message";
+          yearsContainer.parentNode.insertBefore(feed, yearsContainer.nextSibling);
+          setTimeout(() => {
+            if(feed) feed.remove();
+          }, 2000);
+          feed.innerText = `📌 Opened details for ${subject} | KCSE ${y} — (demo archive)`;
+        } else {
+          infoDiv.innerText = `📌 Opened details for ${subject} | KCSE ${y} — (demo archive)`;
+          setTimeout(() => {
+            if(infoDiv) infoDiv.remove();
+          }, 2000);
+        }
+      });
+      yearsContainer.appendChild(yearBtn);
+    }
+    // remove any floating feedback after new click
+    const oldFeed = document.getElementById("yearClickFeedback");
+    if(oldFeed) oldFeed.remove();
+  }
+
+  // load main dashboard and restore selected subjects and tabs
+  function loadDashboard() {
+    const user = getCurrentUser();
+    if (!user) return false;
+    document.getElementById("userNameDisplay").innerText = user.name.split(" ")[0] || user.name;
+    const selectedSubjects = user.selectedSubjects || [];
+    // populate checklist with current subjects
+    renderSubjectChecklist(selectedSubjects);
+    // display decorated tabs for selected subjects
+    renderSelectedSubjectsTabs(selectedSubjects);
+    // reset years area
+    const yearsContainer = document.getElementById("yearsContainer");
+    if (yearsContainer) yearsContainer.innerHTML = `<div class="info-message">Click any subject tab above to browse KCSE years (2000-2027).</div>`;
+    const yearHeader = document.getElementById("yearHeader");
+    if (yearHeader) yearHeader.innerHTML = `📅 KCSE Year Tabs`;
+    return true;
+  }
+
+  // Save selected subjects from checklist to user storage + refresh tabs
+  function saveCurrentSubjects() {
+    const currentUser = getCurrentUser();
+    if (!currentUser) {
+      alert("Session expired, please login again.");
+      logoutAndReset();
+      return false;
+    }
+    const selected = getSelectedSubjectsFromChecklist();
+    updateUserSubjects(currentUser.email, selected);
+    // refresh dashboard view
+    renderSelectedSubjectsTabs(selected);
+    // also update current user obj for later use
+    const updatedUser = getCurrentUser();
+    if(updatedUser) {
+      document.getElementById("userNameDisplay").innerText = updatedUser.name.split(" ")[0];
+    }
+    // optional: notify
+    const msgDiv = document.createElement("div");
+    msgDiv.className = "info-message";
+    msgDiv.innerText = `✅ Subjects updated: ${selected.length} selected.`;
+    const panel = document.querySelector(".selection-panel");
+    const oldMsg = document.getElementById("tempSaveMsg");
+    if(oldMsg) oldMsg.remove();
+    msgDiv.id = "tempSaveMsg";
+    panel.appendChild(msgDiv);
+    setTimeout(() => msgDiv.remove(), 2500);
+    return true;
+  }
+
+  // Logout & show auth section
+  function logoutAndReset() {
+    setCurrentUserEmail(null);
+    document.getElementById("mainAppSection").classList.add("hidden");
+    document.getElementById("authSection").classList.remove("hidden");
+    // reset forms
+    document.getElementById("regForm").classList.remove("hidden");
+    document.getElementById("loginForm").classList.add("hidden");
+    document.getElementById("forgotTicketPanel").classList.add("hidden");
+    clearErrors();
+  }
+
+  function clearErrors() {
+    document.getElementById("regError").innerText = "";
+    document.getElementById("loginError").innerText = "";
+  }
+
+  // after login success: show main app
+  fu
