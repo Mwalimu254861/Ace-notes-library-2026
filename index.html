@@ -2,79 +2,218 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>KCSE PAST PAPERS DASHBOARD</title>
+<title>KCSE PAST PAPERS DASHBOARD</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Study Dashboard | Subject Tabs</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, 'Segoe UI', 'Roboto', 'Inter', sans-serif;
+    }
 
-    <style>
-        body {
-            font-family: Arial;
-            text-align: center;
-            background: #f5f5f5;
-        }
+    body {
+      background: linear-gradient(135deg, #f0f4fa 0%, #d9e2ef 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
 
-        h1 {
-            font-size: 70px;
-            margin-top: 20px;
-        }
+    .dashboard {
+      max-width: 1300px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 2.5rem;
+      box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      backdrop-filter: blur(2px);
+    }
 
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 25px;
-            margin-top: 40px;
-        }
+    /* welcome section – no emojis */
+    .welcome {
+      background: #0b2f5c;
+      padding: 2rem 2.5rem;
+      color: white;
+    }
 
-        .tab {
-            width: 320px;
-            padding: 35px;
-            border-radius: 20px;
-            text-decoration: none;
-            color: white;
-            font-size: 35px;
-            font-weight: bold;
-            text-transform: uppercase;
-            box-shadow: 0px 5px 15px rgba(0,0,0,0.3);
-            transition: 0.3s;
-        }
+    .welcome h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
 
-        .tab:hover {
-            transform: scale(1.08);
-            opacity: 0.9;
-        }
+    .welcome p {
+      font-size: 1.1rem;
+      margin-top: 0.7rem;
+      line-height: 1.4;
+      opacity: 0.92;
+      font-weight: 500;
+      max-width: 80%;
+    }
 
-        /* SUBJECT COLORS */
-        .math { background: linear-gradient(45deg,#ff5722,#ff9800); }
-        .english { background: linear-gradient(45deg,#f44336,#e91e63); }
-        .kiswahili { background: linear-gradient(45deg,#ff9800,#ffc107); }
-        .biology { background: linear-gradient(45deg,#4caf50,#8bc34a); }
-        .chemistry { background: linear-gradient(45deg,#9c27b0,#673ab7); }
-        .physics { background: linear-gradient(45deg,#2196f3,#00bcd4); }
-        .history { background: linear-gradient(45deg,#795548,#607d8b); }
-        .cre { background: linear-gradient(45deg,#3f51b5,#2196f3); }
-        .business { background: linear-gradient(45deg,#ff9800,#e91e63); }
-        .computer { background: linear-gradient(45deg,#00c853,#2196f3); }
+    /* grid for big clickable tabs */
+    .subjects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.3rem;
+      padding: 2.5rem;
+      background: #ffffff;
+    }
 
-    </style>
+    /* subject tab styles – big fonts, bold, colorful */
+    .subject-tab {
+      font-size: 1.5rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 1.2rem 0.5rem;
+      border: none;
+      border-radius: 2rem;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s, filter 0.1s;
+      text-align: center;
+      letter-spacing: 0.02em;
+      background: #cbd5e1;
+      color: #1e293b;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    /* individual subject background colors (vibrant, distinct) */
+    .subject-tab[data-subj="MATHEMATICS"] { background: #1e3a8a; color: white; }
+    .subject-tab[data-subj="ENGLISH"] { background: #0f5b3a; color: white; }
+    .subject-tab[data-subj="KISWAHILI"] { background: #b45309; color: white; }
+    .subject-tab[data-subj="BIOLOGY"] { background: #15803d; color: white; }
+    .subject-tab[data-subj="CHEMISTRY"] { background: #6b21a5; color: white; }
+    .subject-tab[data-subj="PHYSICS"] { background: #4338ca; color: white; }
+    .subject-tab[data-subj="HISTORY"] { background: #c2410c; color: white; }
+    .subject-tab[data-subj="CRE"] { background: #be185d; color: white; }
+    .subject-tab[data-subj="BUSINESS"] { background: #0f766e; color: white; }
+    .subject-tab[data-subj="COMPUTER STUDIES"] { background: #7c3aed; color: white; }
+
+    /* hover and active feedback */
+    .subject-tab:hover {
+      transform: translateY(-4px);
+      filter: brightness(1.05);
+      box-shadow: 0 15px 25px -8px rgba(0, 0, 0, 0.3);
+    }
+
+    .subject-tab:active {
+      transform: translateY(2px);
+      filter: brightness(0.96);
+    }
+
+    /* optional status area (minimal, to show click feedback) */
+    .click-feedback {
+      background: #f8fafc;
+      text-align: center;
+      padding: 1rem;
+      font-size: 1rem;
+      font-weight: 500;
+      color: #1e293b;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .footer {
+      font-size: 0.8rem;
+      text-align: center;
+      padding: 1rem;
+      background: #f1f5f9;
+      color: #334155;
+    }
+
+    @media (max-width: 750px) {
+      body {
+        padding: 1rem;
+      }
+      .welcome {
+        padding: 1.5rem;
+      }
+      .welcome h1 {
+        font-size: 1.7rem;
+      }
+      .welcome p {
+        max-width: 100%;
+        font-size: 1rem;
+      }
+      .subjects-grid {
+        padding: 1.5rem;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      }
+      .subject-tab {
+        font-size: 1.2rem;
+        padding: 0.9rem 0.3rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .subject-tab {
+        font-size: 1rem;
+        padding: 0.7rem 0.2rem;
+      }
+    }
+  </style>
 </head>
-
 <body>
+<div class="dashboard">
+  <div class="welcome">
+    <h1>REVISION DASHBOARD</h1>
+    <p>
+      Welcome, students. Click any subject tab below to begin your study session. 
+      Each subject is presented with a large, color-coded button for easy navigation.
+    </p>
+  </div>
 
-<h1>KCSE PAST PAPERS</h1>
+  <div class="subjects-grid" id="subjectsGrid"></div>
 
-<div class="container">
-
-    <a class="tab math" href="math/">MATHEMATICS</a>
-    <a class="tab english" href="english/">ENGLISH</a>
-    <a class="tab kiswahili" href="kiswahili/">KISWAHILI</a>
-    <a class="tab biology" href="biology/">BIOLOGY</a>
-    <a class="tab chemistry" href="chemistry/">CHEMISTRY</a>
-    <a class="tab physics" href="physics/">PHYSICS</a>
-    <a class="tab history" href="history/">HISTORY</a>
-    <a class="tab cre" href="cre/">CRE</a>
-    <a class="tab business" href="business/">BUSINESS</a>
-    <a class="tab computer" href="computer-studies/">COMPUTER STUDIES</a>
-
+  <div class="click-feedback" id="feedbackMessage">
+    Select a subject to focus your revision.
+  </div>
+  <div class="footer">
+    Click any tab – each subject is ready for your exam preparation.
+  </div>
 </div>
 
+<script>
+  // List of subjects (including duplicate KISWAHILI as requested)
+  const subjects = [
+    "MATHEMATICS",
+    "ENGLISH",
+    "KISWAHILI",
+    "BIOLOGY",
+    "CHEMISTRY",
+    "PHYSICS",
+    "HISTORY",
+    "KISWAHILI",    // duplicate as specified
+    "CRE",
+    "BUSINESS",
+    "COMPUTER STUDIES"
+  ];
+
+  const gridContainer = document.getElementById("subjectsGrid");
+  const feedbackDiv = document.getElementById("feedbackMessage");
+
+  // Create clickable tabs with big fonts and distinct colors
+  subjects.forEach(subject => {
+    const tab = document.createElement("button");
+    tab.className = "subject-tab";
+    tab.setAttribute("data-subj", subject);
+    tab.textContent = subject;   // plain text, no emojis
+    tab.addEventListener("click", () => {
+      // Simple feedback without extra panels – just show which subject was clicked
+      feedbackDiv.textContent = `Selected: ${subject}. Start revising now!`;
+      // Optional: small visual feedback on the clicked tab
+      tab.style.transform = "scale(0.98)";
+      setTimeout(() => { tab.style.transform = ""; }, 120);
+    });
+    gridContainer.appendChild(tab);
+  });
+</script>
 </body>
 </html>
