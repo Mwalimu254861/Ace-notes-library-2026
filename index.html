@@ -1,5 +1,5 @@
 <h1> ACE NOTES LIBRARY</h1>
-    <!DOCTYPE html>
+    !                        <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,19 +12,15 @@
             box-sizing: border-box;
             font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
         }
-
         body {
             background: linear-gradient(145deg, #f0f4ff 0%, #e9eff8 100%);
             min-height: 100vh;
             padding: 20px;
         }
-
         .site-container {
             max-width: 1400px;
             margin: 0 auto;
         }
-
-        /* Header */
         .hero {
             background: linear-gradient(135deg, #1e2b6e 0%, #2a3f8a 100%);
             border-radius: 32px;
@@ -55,8 +51,6 @@
             color: rgba(255,255,240,0.9);
             font-size: 1.1rem;
         }
-
-        /* Registration Panel */
         .register-panel {
             background: white;
             border-radius: 32px;
@@ -121,7 +115,6 @@
             border-radius: 40px;
             border: 1px solid #e2e8f0;
             cursor: pointer;
-            transition: 0.1s;
         }
         .subject-check:hover {
             background: #eef2ff;
@@ -149,8 +142,6 @@
             transform: scale(1.02);
             background: linear-gradient(100deg, #3b4fa0, #25397e);
         }
-
-        /* Success Message */
         .success-toast {
             background: #10b981;
             color: white;
@@ -165,8 +156,6 @@
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        /* Welcome Card */
         .welcome-card {
             background: white;
             border-radius: 28px;
@@ -201,8 +190,6 @@
             background: #e2e8f0;
             transform: translateY(-2px);
         }
-
-        /* Study Area */
         .study-area {
             background: white;
             border-radius: 32px;
@@ -285,13 +272,6 @@
             border: 1px solid #e2e8f0;
             background: #fefefe;
         }
-        .empty-message {
-            text-align: center;
-            padding: 30px;
-            background: #f8fafc;
-            border-radius: 28px;
-            color: #4b5563;
-        }
         footer {
             margin-top: 45px;
             text-align: center;
@@ -318,7 +298,7 @@
     <!-- Registration Section -->
     <div id="registrationSection" class="register-panel">
         <h2>✨ Start Your Revision Journey</h2>
-        <p style="margin-bottom: 12px; color: #475569;">Fill in your details and select your subjects (even if details are incomplete, you'll get access!)</p>
+        <p style="margin-bottom: 12px; color: #475569;">Fill in your details (any info works) and select your subjects</p>
         <div class="form-grid">
             <div class="input-group">
                 <label>Full Name</label>
@@ -337,11 +317,12 @@
             <div class="subjects-title">📌 Select Your KCSE Subjects</div>
             <div class="subjects-grid" id="dynamicSubjectsList"></div>
         </div>
-        <button class="register-btn" id="registerBtn">✅ SUBMIT & ACCESS PAST PAPERS</button>
+        <!-- BUTTON WITH DIRECT ONCLICK (guaranteed to work) -->
+        <button class="register-btn" onclick="registerAndProceed()">✅ SUBMIT & ACCESS PAST PAPERS</button>
         <div id="regFeedback"></div>
     </div>
 
-    <!-- Main Study Area (hidden until registration) -->
+    <!-- Main Study Area (hidden initially) -->
     <div id="studyArea" style="display: none;">
         <div class="welcome-card">
             <div class="student-greeting">
@@ -349,10 +330,9 @@
                 <p id="mySubjectsList"></p>
             </div>
             <div>
-                <button id="resetBtn" class="reset-btn">🔄 Register New Student</button>
+                <button id="resetBtn" class="reset-btn" onclick="resetAndRegister()">🔄 Register New Student</button>
             </div>
         </div>
-
         <div class="study-area">
             <div class="subject-selector">
                 <label>📖 Select Subject to View Past Papers</label>
@@ -379,12 +359,12 @@
         "PHYSICS", "HISTORY", "GEOGRAPHY", "CRE", "BUSINESS", "COMPUTER STUDIES"
     ];
 
-    // Sample PDF content generator (demo)
+    // Generate a simple HTML demo paper (for preview)
     function generateDemoPDF(subject, year) {
         const content = `
             <html style="background: white; font-family: Arial; padding: 2rem;">
                 <div style="max-width: 800px; margin: 0 auto;">
-                    <h1 style="color: #1e2b6e;">KCSE ${subject} ${year} Past Paper</h1>
+                    <h1 style="color: #1e2b6e;">KCSE ${subject} ${year} Past Paper (Demo)</h1>
                     <hr>
                     <h3>SECTION A (Compulsory)</h3>
                     <p><strong>1.</strong> Explain the importance of revision in KCSE preparation. (2 marks)</p>
@@ -394,19 +374,19 @@
                     <p><strong>4.</strong> Analyze the challenges facing ${subject} education in Kenya. (4 marks)</p>
                     <hr>
                     <p><em>📝 This is a demo preview. Real past papers can be uploaded by admin.</em></p>
-                    <p><strong>⬇️ To download:</strong> Right-click and select "Save as PDF" or ask your teacher for the complete paper.</p>
+                    <p><strong>⬇️ To download:</strong> Right-click and select "Save as PDF".</p>
                 </div>
             </html>
         `;
         return "data:text/html;charset=utf-8," + encodeURIComponent(content);
     }
 
-    // Student data
     let currentStudent = null;
 
-    // Initialize subject checkboxes
+    // Populate subject checkboxes
     function initSubjectCheckboxes() {
         const container = document.getElementById('dynamicSubjectsList');
+        if (!container) return;
         container.innerHTML = '';
         ALL_SUBJECTS.forEach(subject => {
             const div = document.createElement('div');
@@ -419,64 +399,61 @@
         });
     }
 
-    // Show success message and proceed
-    function registerAndProceed() {
-        const name = document.getElementById('studentName').value.trim();
-        const email = document.getElementById('studentEmail').value.trim();
-        const phone = document.getElementById('studentPhone').value.trim();
+    // This function is called by the button's onclick
+    window.registerAndProceed = function() {
+        // Get values (even if empty)
+        let name = document.getElementById('studentName').value.trim();
+        let email = document.getElementById('studentEmail').value.trim();
+        let phone = document.getElementById('studentPhone').value.trim();
         
         // Get selected subjects
-        const selectedSubjects = [];
+        let selectedSubjects = [];
         ALL_SUBJECTS.forEach(subject => {
-            const checkbox = document.getElementById(`subj_${subject.replace(/\s/g, '_')}`);
-            if (checkbox && checkbox.checked) {
-                selectedSubjects.push(subject);
-            }
+            const cb = document.getElementById(`subj_${subject.replace(/\s/g, '_')}`);
+            if (cb && cb.checked) selectedSubjects.push(subject);
         });
         
-        // If no subjects selected, select all by default
+        // If none selected, select all
         if (selectedSubjects.length === 0) {
-            ALL_SUBJECTS.forEach(subject => {
-                selectedSubjects.push(subject);
-            });
+            selectedSubjects = [...ALL_SUBJECTS];
         }
         
-        // Create student object (even with empty fields)
+        // Fallback for empty fields
+        if (!name) name = "Student";
+        if (!email) email = "student@kcse.ke";
+        if (!phone) phone = "0712345678";
+        
+        // Save student
         currentStudent = {
-            name: name || "Student",
-            email: email || "student@kcse.ke",
-            phone: phone || "0712345678",
+            name: name,
+            email: email,
+            phone: phone,
             subjects: selectedSubjects,
             registeredAt: new Date().toISOString()
         };
-        
-        // Save to localStorage
         localStorage.setItem('kcse_student', JSON.stringify(currentStudent));
         
         // Show success message
         const feedbackDiv = document.getElementById('regFeedback');
         feedbackDiv.innerHTML = `<div class="success-toast">✅ SUCCESS! Welcome ${currentStudent.name}! Your ${selectedSubjects.length} subject(s) have been saved. Redirecting...</div>`;
         
-        // Hide registration, show study area
+        // Switch UI after short delay
         setTimeout(() => {
             document.getElementById('registrationSection').style.display = 'none';
             document.getElementById('studyArea').style.display = 'block';
             
-            // Update welcome message
             document.getElementById('greetName').innerHTML = `👋 Welcome, ${currentStudent.name}!`;
             document.getElementById('mySubjectsList').innerHTML = `📚 Your subjects: ${currentStudent.subjects.join(', ')}`;
             
-            // Populate subject dropdown with only selected subjects
             populateSubjectDropdown();
-            
-            // Load years for first subject
             loadYearsForSubject();
-        }, 1500);
-    }
+        }, 1200);
+    };
     
-    // Populate dropdown with student's selected subjects
+    // Populate dropdown with only selected subjects
     function populateSubjectDropdown() {
         const select = document.getElementById('viewSubjectDropdown');
+        if (!select) return;
         select.innerHTML = '';
         currentStudent.subjects.forEach(subject => {
             const option = document.createElement('option');
@@ -484,95 +461,66 @@
             option.textContent = subject;
             select.appendChild(option);
         });
-        
-        select.onchange = function() {
-            loadYearsForSubject();
-        };
+        select.onchange = function() { loadYearsForSubject(); };
     }
     
-    // Load years from 2000 to 2027 for selected subject
+    // Load years 2000-2027 for the selected subject
     function loadYearsForSubject() {
         const subject = document.getElementById('viewSubjectDropdown').value;
         if (!subject) return;
-        
         const yearsContainer = document.getElementById('yearsContainer');
         const pdfPreview = document.getElementById('pdfPreviewArea');
-        
-        // Hide PDF preview
         pdfPreview.style.display = 'none';
         yearsContainer.innerHTML = '';
         
-        // Generate years from 2000 to 2027
         for (let year = 2000; year <= 2027; year++) {
-            const yearTile = document.createElement('div');
-            yearTile.className = 'year-tile';
-            yearTile.innerHTML = `
-                <div class="year-number">${year}</div>
-                <div style="font-size: 0.7rem; margin-top: 5px;">📄 KCSE</div>
-            `;
-            
-            // Add click event to show paper
-            yearTile.onclick = (function(y) {
-                return function() {
-                    showPastPaper(subject, y);
-                };
+            const tile = document.createElement('div');
+            tile.className = 'year-tile';
+            tile.innerHTML = `<div class="year-number">${year}</div><div style="font-size:0.7rem; margin-top:5px;">📄 KCSE</div>`;
+            tile.onclick = (function(y) {
+                return function() { showPastPaper(subject, y); };
             })(year);
-            
-            yearsContainer.appendChild(yearTile);
+            yearsContainer.appendChild(tile);
         }
     }
     
-    // Show past paper (generate demo PDF for now)
+    // Show demo PDF
     function showPastPaper(subject, year) {
-        const pdfPreview = document.getElementById('pdfPreviewArea');
+        const previewArea = document.getElementById('pdfPreviewArea');
         const previewTitle = document.getElementById('previewTitle');
-        const pdfIframe = document.getElementById('pdfIframe');
-        
-        // Generate demo PDF content
+        const iframe = document.getElementById('pdfIframe');
         const pdfUrl = generateDemoPDF(subject, year);
-        
         previewTitle.innerHTML = `${subject} KCSE ${year} Past Paper`;
-        pdfIframe.src = pdfUrl;
-        pdfPreview.style.display = 'block';
-        
-        // Scroll to viewer
-        pdfPreview.scrollIntoView({ behavior: 'smooth' });
+        iframe.src = pdfUrl;
+        previewArea.style.display = 'block';
+        previewArea.scrollIntoView({ behavior: 'smooth' });
     }
     
-    // Reset / Register new student
-    function resetAndRegister() {
+    // Reset and reload page (clear storage)
+    window.resetAndRegister = function() {
         localStorage.removeItem('kcse_student');
         location.reload();
-    }
+    };
     
-    // Check for existing session
+    // Check for existing student session
     function checkExistingSession() {
         const saved = localStorage.getItem('kcse_student');
         if (saved) {
             currentStudent = JSON.parse(saved);
             document.getElementById('registrationSection').style.display = 'none';
             document.getElementById('studyArea').style.display = 'block';
-            
             document.getElementById('greetName').innerHTML = `👋 Welcome back, ${currentStudent.name}!`;
             document.getElementById('mySubjectsList').innerHTML = `📚 Your subjects: ${currentStudent.subjects.join(', ')}`;
-            
             populateSubjectDropdown();
             loadYearsForSubject();
         }
     }
     
-    // Event listeners
-    document.getElementById('registerBtn').addEventListener('click', registerAndProceed);
-    document.getElementById('resetBtn').addEventListener('click', resetAndRegister);
-    
-    // Initialize
+    // Initialize page
     initSubjectCheckboxes();
     checkExistingSession();
-    
-    // Also allow Enter key to submit
-    const inputs = document.querySelectorAll('#studentName, #studentEmail, #studentPhone');
-    inputs.forEach(input => {
-        input.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                registerAndProceed();
-                                                  
+</script>
+</body>
+</html>                    const pdfUrl = generateDemoPDF(subject, year);
+        
+        
