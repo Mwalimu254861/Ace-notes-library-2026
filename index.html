@@ -1,6 +1,6 @@
 <h1> ACE NOTES LIBRARY</h1>
 
-                   <!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -23,7 +23,6 @@
       align-items: center;
     }
 
-    /* decorative glassmorphic container */
     .app-container {
       max-width: 1400px;
       width: 100%;
@@ -36,7 +35,6 @@
       border: 1px solid rgba(255,255,240,0.6);
     }
 
-    /* headings highlighted */
     h1, h2, h3 {
       background: linear-gradient(135deg, #1E2F5E, #2B4C7C);
       background-clip: text;
@@ -49,21 +47,10 @@
       text-shadow: 2px 2px 6px rgba(0,0,0,0.02);
     }
 
-    h1 {
-      font-size: 2.1rem;
-      font-weight: 700;
-      border-left-width: 6px;
-    }
+    h1 { font-size: 2.1rem; font-weight: 700; border-left-width: 6px; }
+    h2 { font-size: 1.6rem; }
+    h3 { font-size: 1.3rem; }
 
-    h2 {
-      font-size: 1.6rem;
-    }
-
-    h3 {
-      font-size: 1.3rem;
-    }
-
-    /* card style */
     .form-card, .selection-panel, .subjects-tab-area, .years-area {
       background: white;
       border-radius: 2rem;
@@ -167,7 +154,6 @@
       transform: scale(1);
     }
 
-    /* decorated subject tabs (colored and fancy) */
     .decorated-tabs {
       display: flex;
       flex-wrap: wrap;
@@ -233,6 +219,14 @@
       color: #c7362b;
       font-size: 0.8rem;
       margin-top: 0.3rem;
+      font-weight: 500;
+    }
+
+    .success-text {
+      color: #1f7a4c;
+      font-size: 0.85rem;
+      margin-top: 0.3rem;
+      font-weight: 500;
     }
 
     hr {
@@ -244,10 +238,6 @@
 
     .hidden {
       display: none;
-    }
-
-    .active-section {
-      display: block;
     }
 
     .link-like {
@@ -273,24 +263,21 @@
       color: #6c7e94;
     }
     @media (max-width: 700px) {
-      .app-container {
-        padding: 1.2rem;
-      }
-      .subject-tab, .year-tab {
-        padding: 0.5rem 1rem;
-      }
+      .app-container { padding: 1.2rem; }
+      .subject-tab, .year-tab { padding: 0.5rem 1rem; }
     }
   </style>
 </head>
 <body>
 <div class="app-container" id="appRoot">
-  <!-- REGISTRATION & LOGIN SECTION (visible by default) -->
+  <!-- AUTH SECTION (REGISTRATION + LOGIN) -->
   <div id="authSection">
     <h1>📘 KCSE Subject Portal</h1>
     <div class="flex-row" style="justify-content: flex-start; gap: 1rem; margin-bottom: 1rem;">
-      <button id="showRegBtn" class="secondary-btn" style="background:#1f3e6b;">Register</button>
-      <button id="showLoginBtn" class="secondary-btn" style="background:#3c5e7e;">Log In</button>
+      <button id="showRegBtn" class="secondary-btn" style="background:#1f3e6b;">📝 Register</button>
+      <button id="showLoginBtn" class="secondary-btn" style="background:#3c5e7e;">🔑 Log In</button>
     </div>
+
     <!-- Registration Form -->
     <div id="regForm" class="form-card">
       <h2>✍️ Create account</h2>
@@ -315,9 +302,10 @@
         <input type="password" id="regConfirm" placeholder="••••••">
       </div>
       <div class="flex-row">
-        <button id="registerBtn">Register & Continue</button>
+        <button id="registerBtn">✅ Register</button>
       </div>
       <div id="regError" class="error-text"></div>
+      <div id="regSuccessMsg" class="success-text"></div>
     </div>
 
     <!-- Login Form -->
@@ -338,7 +326,7 @@
       <div id="loginError" class="error-text"></div>
     </div>
 
-    <!-- Forgot Password Ticket Modal / inline hidden -->
+    <!-- Forgot Password Ticket Panel -->
     <div id="forgotTicketPanel" class="form-card hidden" style="background:#fef7e8;">
       <h3>📧 Password Reset Ticket</h3>
       <p>Write a short message & send an email request to <strong>Nyakundi1759@gmail.com</strong></p>
@@ -384,7 +372,7 @@
       </div>
     </div>
 
-    <!-- Years Display Section (Dynamic based on subject click) -->
+    <!-- Years Display Section -->
     <div class="years-area">
       <h3 id="yearHeader">📅 KCSE Year Tabs</h3>
       <div id="yearsContainer" class="year-tabs-container">
@@ -397,28 +385,24 @@
 
 <script>
   // ---------- DATA MODELS ----------
-  // Subject master list (deduplicate KISWAHILI appears twice? using Set)
   const MASTER_SUBJECTS = [
     "MATHEMATICS", "ENGLISH", "KISWAHILI", "BIOLOGY", "CHEMISTRY",
     "PHYSICS", "HISTORY", "CRE", "BUSINESS", "COMPUTER STUDIES", "GEOGRAPHY"
   ];
 
-  // Storage keys
   const STORAGE_USERS = "kcse_portal_users";
   const SESSION_EMAIL = "kcse_logged_user_email";
 
-  // Helper: Load users from localStorage
   function getUsers() {
     const data = localStorage.getItem(STORAGE_USERS);
     if (!data) return [];
-    return JSON.parse(data);
+    try { return JSON.parse(data); } catch(e) { return []; }
   }
 
   function saveUsers(users) {
     localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
   }
 
-  // get current logged user email
   function getCurrentUserEmail() {
     return sessionStorage.getItem(SESSION_EMAIL);
   }
@@ -428,7 +412,6 @@
     else sessionStorage.removeItem(SESSION_EMAIL);
   }
 
-  // retrieve full user object
   function getCurrentUser() {
     const email = getCurrentUserEmail();
     if (!email) return null;
@@ -436,7 +419,6 @@
     return users.find(u => u.email === email) || null;
   }
 
-  // update user subjects
   function updateUserSubjects(email, selectedSubjectsArray) {
     let users = getUsers();
     const index = users.findIndex(u => u.email === email);
@@ -448,37 +430,39 @@
     return false;
   }
 
-  // registration logic
+  // Registration logic (fixed)
   function registerUser(name, email, phone, password, confirm) {
-    if (!name.trim()) return "Full name required";
-    if (!email.trim()) return "Email required";
-    if (!phone.trim()) return "Phone number required";
-    if (!password) return "Set a password";
-    if (password !== confirm) return "Passwords do not match";
-    if (password.length < 4) return "Password must be at least 4 characters";
+    if (!name.trim()) return "Full name is required.";
+    if (!email.trim()) return "Email address is required.";
+    if (!phone.trim()) return "Phone number is required.";
+    if (!password) return "Please set a password.";
+    if (password !== confirm) return "Passwords do not match.";
+    if (password.length < 4) return "Password must be at least 4 characters.";
+
     const users = getUsers();
-    if (users.find(u => u.email === email)) return "Email already registered. Please login.";
+    if (users.find(u => u.email === email)) return "Email already registered. Please login instead.";
+
     const newUser = {
       name: name.trim(),
       email: email.trim(),
       phone: phone.trim(),
       password: password,
-      selectedSubjects: []    // initially empty
+      selectedSubjects: []
     };
     users.push(newUser);
     saveUsers(users);
-    return null;
+    return null; // success
   }
 
   function loginUser(email, password) {
     const users = getUsers();
     const user = users.find(u => u.email === email && u.password === password);
-    if (!user) return "Invalid email or password";
+    if (!user) return "Invalid email or password.";
     setCurrentUserEmail(email);
     return null;
   }
 
-  // ----- RENDER SUBJECT CHECKLIST (multi-select) -----
+  // ----- RENDER SUBJECT CHECKLIST -----
   function renderSubjectChecklist(selectedSubjects = []) {
     const container = document.getElementById("subjectChecklist");
     if (!container) return;
@@ -499,17 +483,13 @@
     });
   }
 
-  // Get currently selected subjects from checklist (live)
   function getSelectedSubjectsFromChecklist() {
     const checkboxes = document.querySelectorAll("#subjectChecklist input[type='checkbox']");
     const selected = [];
-    checkboxes.forEach(cb => {
-      if (cb.checked) selected.push(cb.value);
-    });
+    checkboxes.forEach(cb => { if (cb.checked) selected.push(cb.value); });
     return selected;
   }
 
-  // Render decorated subject tabs (colored tabs) based on selected subjects array
   function renderSelectedSubjectsTabs(subjectsArray) {
     const container = document.getElementById("selectedSubjectsTabsContainer");
     if (!container) return;
@@ -523,66 +503,46 @@
       tab.className = "subject-tab";
       tab.innerText = subject;
       tab.setAttribute("data-subject", subject);
-      tab.addEventListener("click", (e) => {
-        e.stopPropagation();
-        displayYearsForSubject(subject);
-      });
+      tab.addEventListener("click", () => displayYearsForSubject(subject));
       container.appendChild(tab);
     });
   }
 
-  // Generate years 2000 .. 2027, display decorated clickable year tabs
   function displayYearsForSubject(subject) {
     const yearsContainer = document.getElementById("yearsContainer");
     const yearHeader = document.getElementById("yearHeader");
     if (!yearsContainer) return;
     yearHeader.innerHTML = `📅 ${subject} — KCSE Year Archive (click any year)`;
     yearsContainer.innerHTML = "";
-    const startYear = 2000;
-    const endYear = 2027;
+    const startYear = 2000, endYear = 2027;
     for (let y = startYear; y <= endYear; y++) {
       const yearBtn = document.createElement("button");
       yearBtn.className = "year-tab";
       yearBtn.innerText = `KCSE ${y}`;
-      yearBtn.setAttribute("data-year", y);
-      yearBtn.setAttribute("data-subject", subject);
       yearBtn.addEventListener("click", () => {
-        // show interactive decorative click feedback
-        const infoDiv = document.getElementById("yearClickFeedback");
-        if (!infoDiv) {
-          const feed = document.createElement("div");
+        let feed = document.getElementById("yearClickFeedback");
+        if (!feed) {
+          feed = document.createElement("div");
           feed.id = "yearClickFeedback";
           feed.className = "info-message";
           yearsContainer.parentNode.insertBefore(feed, yearsContainer.nextSibling);
-          setTimeout(() => {
-            if(feed) feed.remove();
-          }, 2000);
-          feed.innerText = `📌 Opened details for ${subject} | KCSE ${y} — (demo archive)`;
-        } else {
-          infoDiv.innerText = `📌 Opened details for ${subject} | KCSE ${y} — (demo archive)`;
-          setTimeout(() => {
-            if(infoDiv) infoDiv.remove();
-          }, 2000);
         }
+        feed.innerText = `📌 Opened details for ${subject} | KCSE ${y} — (demo archive)`;
+        setTimeout(() => { if(feed && feed.remove) feed.remove(); }, 2000);
       });
       yearsContainer.appendChild(yearBtn);
     }
-    // remove any floating feedback after new click
     const oldFeed = document.getElementById("yearClickFeedback");
     if(oldFeed) oldFeed.remove();
   }
 
-  // load main dashboard and restore selected subjects and tabs
   function loadDashboard() {
     const user = getCurrentUser();
     if (!user) return false;
     document.getElementById("userNameDisplay").innerText = user.name.split(" ")[0] || user.name;
     const selectedSubjects = user.selectedSubjects || [];
-    // populate checklist with current subjects
     renderSubjectChecklist(selectedSubjects);
-    // display decorated tabs for selected subjects
     renderSelectedSubjectsTabs(selectedSubjects);
-    // reset years area
     const yearsContainer = document.getElementById("yearsContainer");
     if (yearsContainer) yearsContainer.innerHTML = `<div class="info-message">Click any subject tab above to browse KCSE years (2000-2027).</div>`;
     const yearHeader = document.getElementById("yearHeader");
@@ -590,7 +550,6 @@
     return true;
   }
 
-  // Save selected subjects from checklist to user storage + refresh tabs
   function saveCurrentSubjects() {
     const currentUser = getCurrentUser();
     if (!currentUser) {
@@ -600,14 +559,7 @@
     }
     const selected = getSelectedSubjectsFromChecklist();
     updateUserSubjects(currentUser.email, selected);
-    // refresh dashboard view
     renderSelectedSubjectsTabs(selected);
-    // also update current user obj for later use
-    const updatedUser = getCurrentUser();
-    if(updatedUser) {
-      document.getElementById("userNameDisplay").innerText = updatedUser.name.split(" ")[0];
-    }
-    // optional: notify
     const msgDiv = document.createElement("div");
     msgDiv.className = "info-message";
     msgDiv.innerText = `✅ Subjects updated: ${selected.length} selected.`;
@@ -620,22 +572,46 @@
     return true;
   }
 
-  // Logout & show auth section
   function logoutAndReset() {
     setCurrentUserEmail(null);
     document.getElementById("mainAppSection").classList.add("hidden");
     document.getElementById("authSection").classList.remove("hidden");
-    // reset forms
     document.getElementById("regForm").classList.remove("hidden");
     document.getElementById("loginForm").classList.add("hidden");
     document.getElementById("forgotTicketPanel").classList.add("hidden");
-    clearErrors();
-  }
-
-  function clearErrors() {
     document.getElementById("regError").innerText = "";
+    document.getElementById("regSuccessMsg").innerText = "";
     document.getElementById("loginError").innerText = "";
+    document.getElementById("regName").value = "";
+    document.getElementById("regEmail").value = "";
+    document.getElementById("regPhone").value = "";
+    document.getElementById("regPassword").value = "";
+    document.getElementById("regConfirm").value = "";
+    document.getElementById("loginEmail").value = "";
+    document.getElementById("loginPassword").value = "";
   }
 
-  // after login success: show main app
-  fu
+  function proceedAfterLogin() {
+    document.getElementById("authSection").classList.add("hidden");
+    document.getElementById("mainAppSection").classList.remove("hidden");
+    loadDashboard();
+  }
+
+  function sendResetTicket(email, messageBody) {
+    if (!email) return "Please enter your email address to identify ticket.";
+    const subject = `Password Reset Request - KCSE Portal`;
+    const body = `User Email: ${email}\n\nRequest details:\n${messageBody || "I need to reset my password. Please assist."}\n\n-- generated from KCSE Subject Portal`;
+    const mailtoLink = `mailto:Nyakundi1759@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailtoLink;
+    return "📧 Email client opened. Send the ticket to reset your password.";
+  }
+
+  // ----- EVENT LISTENERS -----
+  document.addEventListener("DOMContentLoaded", () => {
+    if (getCurrentUserEmail() && getCurrentUser()) {
+      document.getElementById("authSection").classList.add("hidden");
+      document.getElementById("mainAppSection").classList.remove("hidden");
+      loadDashboard();
+    } else {
+      document.getElementById("authSection").classList.remove("hidden");
+      document.getElementById("mainAppSection").clas
