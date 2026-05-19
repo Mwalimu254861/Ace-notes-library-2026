@@ -831,129 +831,29 @@ function openYears(subject){
 
 </body>
 </html>  
-<script>
-// ALL SUBJECTS FROM YOUR FORM
-const subjects = [
-  "MATHEMATICS",
-  "ENGLISH",
-  "KISWAHILI",
-  "BIOLOGY",
-  "CHEMISTRY",
-  "PHYSICS",
-  "HISTORY",
-  "CRE",
-  "BUSINESS",
-  "COMPUTER STUDIES",
-  "GEOGRAPHY",
-  "AGRICULTURE"
-];
-
-// KCSE YEARS
-const years = [];
-for (let y = 2000; y <= 2027; y++) {
-  years.push(y);
-}
-
-// STEP 1: AFTER REGISTRATION → SHOW SUBJECTS
-function continuePortal() {
-  const dashboard = document.getElementById("dashboardArea");
-
-  let html = `<h2>Select Subject</h2><div class="grid">`;
-
-  subjects.forEach(sub => {
-    html += `
-      <button class="subject-btn" onclick="showYears('${sub}')">
-        ${sub}
-      </button>
-    `;
-  });
-
-  html += `</div>`;
-
-  dashboard.innerHTML = html;
-
-  document.getElementById("registrationCard").style.display = "none";
-}
-
-// STEP 2: SHOW YEARS AFTER SUBJECT CLICK
-function showYears(subject) {
-  const yearsArea = document.getElementById("yearsArea");
-
-  let html = `
-    <h2>${subject} - Select Year</h2>
-    <div class="grid">
-  `;
-
-  years.forEach(year => {
-    html += `
-      <button class="year-btn" onclick="showPapers('${subject}', ${year})">
-        ${year}
-      </button>
-    `;
-  });
-
-  html += `</div>`;
-
-  yearsArea.innerHTML = html;
-}
-
-// STEP 3: SHOW PAPER 1 & 2
+        <script>
 function showPapers(subject, year) {
   const yearsArea = document.getElementById("yearsArea");
 
   yearsArea.innerHTML = `
-    <h2>${subject} - ${year}</h2>
-    <p>Select Paper</p>
+    <h2>${subject} - KCSE ${year}</h2>
+    <p>Select paper to start revision</p>
 
-    <div class="grid">
-      <button class="paper-btn" onclick="startRevision('${subject}', ${year}, 1)">
-        PAPER 1
-      </button>
+    <div class="paper-container">
 
-      <button class="paper-btn" onclick="startRevision('${subject}', ${year}, 2)">
-        PAPER 2
-      </button>
+      <div class="paper-card" onclick="startRevision('${subject}', ${year}, 1)">
+        <div class="icon">📘</div>
+        <h3>Paper 1</h3>
+        <p>Click to start revision</p>
+      </div>
+
+      <div class="paper-card" onclick="startRevision('${subject}', ${year}, 2)">
+        <div class="icon">📙</div>
+        <h3>Paper 2</h3>
+        <p>Click to start revision</p>
+      </div>
+
     </div>
   `;
 }
-
-// STEP 4: START REVISION
-function startRevision(subject, year, paper) {
-  const yearsArea = document.getElementById("yearsArea");
-
-  yearsArea.innerHTML = `
-    <h2>${subject} - ${year} Paper ${paper}</h2>
-
-    <div class="revision-box">
-      <p>📘 Ready for revision</p>
-      <p>Subject: <b>${subject}</b></p>
-      <p>Year: <b>${year}</b></p>
-      <p>Paper: <b>${paper}</b></p>
-
-      <button class="rev-btn" onclick="loadQuestions('${subject}', ${year}, ${paper})">
-        START REVISION
-      </button>
-    </div>
-  `;
-}
-
-// STEP 5: REVISION SCREEN (PLACEHOLDER)
-function loadQuestions(subject, year, paper) {
-  const yearsArea = document.getElementById("yearsArea");
-
-  yearsArea.innerHTML = `
-    <h2>📖 ${subject} Revision</h2>
-
-    <p>KCSE ${year} Paper ${paper}</p>
-
-    <div class="question-box">
-      <p>Questions will load here (PDF / MCQ system can be added)</p>
-    </div>
-
-    <button onclick="showPapers('${subject}', ${year})">
-      ⬅ Back
-    </button>
-  `;
-}
-</script>
-    
+        </script>
