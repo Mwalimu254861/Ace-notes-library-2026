@@ -1,5 +1,6 @@
-<h1> ACE NOTES LIBRARY</h1>
-      <!DOCTYPE html>
+<h1> 
+        
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -99,6 +100,8 @@ input:focus{
     transition:0.3s;
     border:2px solid #334155;
     font-weight:bold;
+    position:relative;
+    overflow:hidden;
 }
 
 .subject-box:hover{
@@ -114,6 +117,41 @@ input:focus{
 
 .subject-box input{
     display:none;
+}
+
+/* Tick Mark */
+
+.tick-mark{
+    position:absolute;
+    top:10px;
+    right:10px;
+    width:24px;
+    height:24px;
+    border-radius:50%;
+    background:white;
+    color:#2563eb;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    font-size:15px;
+    font-weight:bold;
+    box-shadow:0 0 10px rgba(255,255,255,0.5);
+}
+
+.subject-box.active .tick-mark{
+    display:flex;
+}
+
+.selected-count{
+    margin-top:20px;
+    text-align:center;
+    font-size:18px;
+    font-weight:bold;
+    color:#facc15;
+    background:rgba(250,204,21,0.1);
+    padding:14px;
+    border-radius:12px;
+    border:1px solid rgba(250,204,21,0.3);
 }
 
 .btn{
@@ -251,64 +289,80 @@ input:focus{
 
             <label class="subject-box">
                 <input type="checkbox" value="MATHEMATICS">
+                <span class="tick-mark">✓</span>
                 MATHEMATICS
             </label>
 
             <label class="subject-box">
                 <input type="checkbox" value="ENGLISH">
+                <span class="tick-mark">✓</span>
                 ENGLISH
             </label>
 
             <label class="subject-box">
                 <input type="checkbox" value="KISWAHILI">
+                <span class="tick-mark">✓</span>
                 KISWAHILI
             </label>
 
             <label class="subject-box">
                 <input type="checkbox" value="BIOLOGY">
+                <span class="tick-mark">✓</span>
                 BIOLOGY
             </label>
 
             <label class="subject-box">
                 <input type="checkbox" value="CHEMISTRY">
+                <span class="tick-mark">✓</span>
                 CHEMISTRY
             </label>
 
             <label class="subject-box">
                 <input type="checkbox" value="PHYSICS">
+                <span class="tick-mark">✓</span>
                 PHYSICS
             </label>
 
             <label class="subject-box">
                 <input type="checkbox" value="HISTORY">
+                <span class="tick-mark">✓</span>
                 HISTORY
             </label>
 
             <label class="subject-box">
                 <input type="checkbox" value="CRE">
+                <span class="tick-mark">✓</span>
                 CRE
             </label>
 
             <label class="subject-box">
                 <input type="checkbox" value="BUSINESS">
+                <span class="tick-mark">✓</span>
                 BUSINESS
             </label>
 
             <label class="subject-box">
                 <input type="checkbox" value="COMPUTER STUDIES">
+                <span class="tick-mark">✓</span>
                 COMPUTER STUDIES
             </label>
 
             <label class="subject-box">
                 <input type="checkbox" value="GEOGRAPHY">
+                <span class="tick-mark">✓</span>
                 GEOGRAPHY
             </label>
 
             <label class="subject-box">
                 <input type="checkbox" value="AGRICULTURE">
+                <span class="tick-mark">✓</span>
                 AGRICULTURE
             </label>
 
+        </div>
+
+        <div class="selected-count" id="selectedCount">
+            Selected Subjects: 0
         </div>
 
         <button class="btn" onclick="goToSubjects()">
@@ -330,6 +384,7 @@ input:focus{
 <script>
 
 const subjectBoxes = document.querySelectorAll('.subject-box');
+const selectedCount = document.getElementById('selectedCount');
 
 subjectBoxes.forEach(box => {
 
@@ -337,9 +392,25 @@ subjectBoxes.forEach(box => {
 
         box.classList.toggle('active');
 
+        const checkbox = box.querySelector('input');
+
+        checkbox.checked = !checkbox.checked;
+
+        updateSelectedCount();
+
     });
 
 });
+
+function updateSelectedCount(){
+
+    const totalSelected =
+    document.querySelectorAll('.subject-box input:checked').length;
+
+    selectedCount.innerHTML =
+    `Selected Subjects: ${totalSelected}`;
+
+}
 
 function goToSubjects(){
 
@@ -364,15 +435,16 @@ function goToSubjects(){
         return;
     }
 
-    // Hide personal information section
+    // Hide Information Section
     document.querySelector('.form-grid').style.display = "none";
     document.querySelector('.subjects').style.display = "none";
     document.querySelector('.btn').style.display = "none";
+    document.querySelector('.selected-count').style.display = "none";
 
-    // Show instructor notice
+    // Show Notice
     document.getElementById('noticeBox').style.display = "block";
 
-    // Display selected subjects
+    // Display Selected Subjects
     const subjectsArea = document.getElementById('subjectsArea');
 
     subjectsArea.innerHTML = `
@@ -381,12 +453,18 @@ function goToSubjects(){
         </h2>
 
         <div class="subject-tabs">
+
             ${selectedSubjects.map(subject => `
+
                 <div class="subject-tab"
                      onclick="openYears('${subject}')">
+
                      ${subject}
+
                 </div>
+
             `).join('')}
+
         </div>
     `;
 
@@ -401,9 +479,13 @@ function openYears(subject){
     for(let year = 2000; year <= 2027; year++){
 
         yearsHTML += `
+
             <a href="#" class="year-link">
+
                 KCSE ${year}
+
             </a>
+
         `;
 
     }
@@ -413,11 +495,15 @@ function openYears(subject){
         <div class="years-section">
 
             <div class="years-title">
+
                 ${subject} Past Papers
+
             </div>
 
             <div class="years-grid">
+
                 ${yearsHTML}
+
             </div>
 
         </div>
@@ -429,4 +515,4 @@ function openYears(subject){
 </script>
 
 </body>
-                  </html>
+</html>        
