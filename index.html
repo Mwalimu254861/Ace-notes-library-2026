@@ -1,5 +1,3 @@
-<h1> 
-        
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,10 +21,14 @@ body{
     padding:30px;
 }
 
+/* MAIN CONTAINER */
+
 .container{
     max-width:1200px;
     margin:auto;
 }
+
+/* TITLES */
 
 .main-title{
     text-align:center;
@@ -43,14 +45,18 @@ body{
     font-size:18px;
 }
 
+/* CARD */
+
 .card{
     background:rgba(255,255,255,0.05);
-    border-radius:20px;
+    border-radius:22px;
     padding:30px;
     border:1px solid rgba(255,255,255,0.08);
     box-shadow:0 10px 30px rgba(0,0,0,0.4);
     backdrop-filter:blur(10px);
 }
+
+/* SECTION TITLE */
 
 .section-title{
     color:#facc15;
@@ -59,6 +65,8 @@ body{
     border-left:6px solid #facc15;
     padding-left:12px;
 }
+
+/* INPUTS */
 
 .form-grid{
     display:grid;
@@ -69,9 +77,9 @@ body{
 
 input{
     width:100%;
-    padding:15px;
+    padding:16px;
     border:none;
-    border-radius:12px;
+    border-radius:14px;
     background:#1e293b;
     color:white;
     font-size:16px;
@@ -85,6 +93,8 @@ input:focus{
     box-shadow:0 0 12px rgba(56,189,248,0.4);
 }
 
+/* SUBJECTS */
+
 .subjects{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
@@ -93,8 +103,8 @@ input:focus{
 
 .subject-box{
     background:#0f172a;
-    padding:16px;
-    border-radius:14px;
+    padding:18px;
+    border-radius:16px;
     text-align:center;
     cursor:pointer;
     transition:0.3s;
@@ -109,24 +119,27 @@ input:focus{
     border-color:#38bdf8;
 }
 
+/* ACTIVE SUBJECT */
+
 .subject-box.active{
     background:linear-gradient(135deg,#2563eb,#38bdf8);
     border-color:#38bdf8;
-    box-shadow:0 0 18px rgba(56,189,248,0.5);
+    color:white;
+    box-shadow:0 0 20px rgba(56,189,248,0.5);
 }
 
 .subject-box input{
     display:none;
 }
 
-/* Tick Mark */
+/* TICK */
 
-.tick-mark{
+.tick{
     position:absolute;
     top:10px;
     right:10px;
-    width:24px;
-    height:24px;
+    width:25px;
+    height:25px;
     border-radius:50%;
     background:white;
     color:#2563eb;
@@ -138,33 +151,37 @@ input:focus{
     box-shadow:0 0 10px rgba(255,255,255,0.5);
 }
 
-.subject-box.active .tick-mark{
+.subject-box.active .tick{
     display:flex;
 }
+
+/* SUBJECT COUNT */
 
 .selected-count{
     margin-top:20px;
     text-align:center;
+    background:rgba(250,204,21,0.1);
+    border:1px solid rgba(250,204,21,0.3);
+    color:#facc15;
+    padding:14px;
+    border-radius:14px;
     font-size:18px;
     font-weight:bold;
-    color:#facc15;
-    background:rgba(250,204,21,0.1);
-    padding:14px;
-    border-radius:12px;
-    border:1px solid rgba(250,204,21,0.3);
 }
+
+/* BUTTON */
 
 .btn{
     width:100%;
-    padding:17px;
     margin-top:30px;
+    padding:17px;
     border:none;
     border-radius:14px;
     font-size:18px;
     font-weight:bold;
     cursor:pointer;
-    background:linear-gradient(135deg,#22c55e,#16a34a);
     color:white;
+    background:linear-gradient(135deg,#22c55e,#16a34a);
     transition:0.3s;
 }
 
@@ -173,22 +190,30 @@ input:focus{
     box-shadow:0 0 18px rgba(34,197,94,0.5);
 }
 
+/* NOTICE */
+
 .notice{
     margin-top:25px;
     background:#14532d;
     color:#bbf7d0;
     padding:18px;
     border-radius:14px;
-    font-size:18px;
     text-align:center;
+    font-size:18px;
     display:none;
 }
 
-.subject-tabs{
+/* SUBJECT DASHBOARD */
+
+.dashboard{
     margin-top:40px;
+}
+
+.subject-dashboard{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
     gap:20px;
+    margin-top:20px;
 }
 
 .subject-tab{
@@ -209,13 +234,15 @@ input:focus{
     box-shadow:0 0 20px rgba(216,180,254,0.5);
 }
 
+/* YEARS */
+
 .years-section{
     margin-top:40px;
 }
 
 .years-title{
-    color:#38bdf8;
     font-size:32px;
+    color:#38bdf8;
     margin-bottom:20px;
     text-transform:uppercase;
 }
@@ -226,23 +253,26 @@ input:focus{
     gap:15px;
 }
 
-.year-link{
-    text-decoration:none;
+.year-tab{
     background:linear-gradient(135deg,#ea580c,#f97316);
-    color:white;
-    padding:15px;
+    padding:16px;
     border-radius:14px;
     text-align:center;
     font-weight:bold;
+    cursor:pointer;
     transition:0.3s;
     border:2px solid transparent;
+    text-decoration:none;
+    color:white;
 }
 
-.year-link:hover{
+.year-tab:hover{
     transform:translateY(-4px);
     border-color:#fdba74;
     box-shadow:0 0 18px rgba(249,115,22,0.5);
 }
+
+/* MOBILE */
 
 @media(max-width:700px){
 
@@ -269,9 +299,13 @@ input:focus{
         KCSE Revision and Past Papers Portal
     </p>
 
+    <!-- REGISTRATION CARD -->
+
     <div class="card" id="registrationCard">
 
-        <h2 class="section-title">Learner Information</h2>
+        <h2 class="section-title">
+            Learner Information
+        </h2>
 
         <div class="form-grid">
 
@@ -283,79 +317,81 @@ input:focus{
 
         </div>
 
-        <h2 class="section-title">Select Subjects</h2>
+        <h2 class="section-title">
+            Select Subjects
+        </h2>
 
         <div class="subjects">
 
             <label class="subject-box">
                 <input type="checkbox" value="MATHEMATICS">
-                <span class="tick-mark">✓</span>
+                <span class="tick">✓</span>
                 MATHEMATICS
             </label>
 
             <label class="subject-box">
                 <input type="checkbox" value="ENGLISH">
-                <span class="tick-mark">✓</span>
+                <span class="tick">✓</span>
                 ENGLISH
             </label>
 
             <label class="subject-box">
                 <input type="checkbox" value="KISWAHILI">
-                <span class="tick-mark">✓</span>
+                <span class="tick">✓</span>
                 KISWAHILI
             </label>
 
             <label class="subject-box">
                 <input type="checkbox" value="BIOLOGY">
-                <span class="tick-mark">✓</span>
+                <span class="tick">✓</span>
                 BIOLOGY
             </label>
 
             <label class="subject-box">
                 <input type="checkbox" value="CHEMISTRY">
-                <span class="tick-mark">✓</span>
+                <span class="tick">✓</span>
                 CHEMISTRY
             </label>
 
             <label class="subject-box">
                 <input type="checkbox" value="PHYSICS">
-                <span class="tick-mark">✓</span>
+                <span class="tick">✓</span>
                 PHYSICS
             </label>
 
             <label class="subject-box">
                 <input type="checkbox" value="HISTORY">
-                <span class="tick-mark">✓</span>
+                <span class="tick">✓</span>
                 HISTORY
             </label>
 
             <label class="subject-box">
                 <input type="checkbox" value="CRE">
-                <span class="tick-mark">✓</span>
+                <span class="tick">✓</span>
                 CRE
             </label>
 
             <label class="subject-box">
                 <input type="checkbox" value="BUSINESS">
-                <span class="tick-mark">✓</span>
+                <span class="tick">✓</span>
                 BUSINESS
             </label>
 
             <label class="subject-box">
                 <input type="checkbox" value="COMPUTER STUDIES">
-                <span class="tick-mark">✓</span>
+                <span class="tick">✓</span>
                 COMPUTER STUDIES
             </label>
 
             <label class="subject-box">
                 <input type="checkbox" value="GEOGRAPHY">
-                <span class="tick-mark">✓</span>
+                <span class="tick">✓</span>
                 GEOGRAPHY
             </label>
 
             <label class="subject-box">
                 <input type="checkbox" value="AGRICULTURE">
-                <span class="tick-mark">✓</span>
+                <span class="tick">✓</span>
                 AGRICULTURE
             </label>
 
@@ -365,23 +401,29 @@ input:focus{
             Selected Subjects: 0
         </div>
 
-        <button class="btn" onclick="goToSubjects()">
-            CONTINUE TO SUBJECTS
+        <button class="btn" onclick="continuePortal()">
+            CONTINUE TO DASHBOARD
         </button>
 
         <div class="notice" id="noticeBox">
-            Login information sent to the instructor successfully.
+            Information sent to instructor successfully.
         </div>
 
     </div>
 
-    <div id="subjectsArea"></div>
+    <!-- SUBJECT DASHBOARD -->
+
+    <div id="dashboardArea"></div>
+
+    <!-- YEARS SECTION -->
 
     <div id="yearsArea"></div>
 
 </div>
 
 <script>
+
+/* SUBJECT SELECTION */
 
 const subjectBoxes = document.querySelectorAll('.subject-box');
 const selectedCount = document.getElementById('selectedCount');
@@ -402,6 +444,8 @@ subjectBoxes.forEach(box => {
 
 });
 
+/* UPDATE COUNT */
+
 function updateSelectedCount(){
 
     const totalSelected =
@@ -412,63 +456,84 @@ function updateSelectedCount(){
 
 }
 
-function goToSubjects(){
+/* CONTINUE */
+
+function continuePortal(){
 
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
     const phone = document.getElementById('phone').value;
 
     if(name === "" || email === "" || phone === ""){
-        alert("Please fill all personal information.");
+
+        alert("Please fill all learner information.");
+
         return;
+
     }
 
     const selectedSubjects = [];
 
     document.querySelectorAll('.subject-box input:checked')
     .forEach(subject => {
+
         selectedSubjects.push(subject.value);
+
     });
 
     if(selectedSubjects.length === 0){
+
         alert("Please select at least one subject.");
+
         return;
+
     }
 
-    // Hide Information Section
+    /* HIDE INPUT SECTION */
+
     document.querySelector('.form-grid').style.display = "none";
     document.querySelector('.subjects').style.display = "none";
-    document.querySelector('.btn').style.display = "none";
     document.querySelector('.selected-count').style.display = "none";
+    document.querySelector('.btn').style.display = "none";
 
-    // Show Notice
+    /* SHOW NOTICE */
+
     document.getElementById('noticeBox').style.display = "block";
 
-    // Display Selected Subjects
-    const subjectsArea = document.getElementById('subjectsArea');
+    /* OPEN DASHBOARD */
 
-    subjectsArea.innerHTML = `
-        <h2 class="section-title" style="margin-top:40px;">
-            Your Selected Subjects
-        </h2>
+    const dashboardArea = document.getElementById('dashboardArea');
 
-        <div class="subject-tabs">
+    dashboardArea.innerHTML = `
 
-            ${selectedSubjects.map(subject => `
+        <div class="dashboard">
 
-                <div class="subject-tab"
-                     onclick="openYears('${subject}')">
+            <h2 class="section-title">
+                Student Dashboard
+            </h2>
 
-                     ${subject}
+            <div class="subject-dashboard">
 
-                </div>
+                ${selectedSubjects.map(subject => `
 
-            `).join('')}
+                    <div class="subject-tab"
+                         onclick="openYears('${subject}')">
+
+                         ${subject}
+
+                    </div>
+
+                `).join('')}
+
+            </div>
 
         </div>
+
     `;
 
 }
+
+/* OPEN YEARS */
 
 function openYears(subject){
 
@@ -480,9 +545,16 @@ function openYears(subject){
 
         yearsHTML += `
 
-            <a href="#" class="year-link">
+            <!-- 
+            Replace # with your folder or PDF link later
+            Example:
+            href="mathematics/2000/"
+            -->
 
-                KCSE ${year}
+            <a href="#"
+               class="year-tab">
+
+               KCSE ${year}
 
             </a>
 
@@ -515,4 +587,5 @@ function openYears(subject){
 </script>
 
 </body>
-</html>        
+</html>          
+            
