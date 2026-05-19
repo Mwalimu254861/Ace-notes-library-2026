@@ -334,65 +334,7 @@ input:focus{
                 <span class="tick">✓</span>
                 function openYears(subject){
 
-    const yearsArea = document.getElementById('yearsArea');
-
-    // Only Mathematics for now (as requested)
-    if(subject !== "MATHEMATICS"){
-        yearsArea.innerHTML = `<h2 class="years-title">${subject} not yet configured</h2>`;
-        return;
-    }
-
-    let yearsHTML = '';
-
-    for(let year = 2000; year <= 2027; year++){
-
-        yearsHTML += `
-        
-        <div class="year-container">
-
-            <div class="year-title">
-                KCSE ${year}
-            </div>
-
-            <div class="folder-grid">
-
-                <a class="folder" href="mathematics/${year}/paper1/">
-                    Paper 1
-                </a>
-
-                <a class="folder" href="mathematics/${year}/paper2/">
-                    Paper 2
-                </a>
-
-                <a class="folder" href="mathematics/${year}/marking-scheme/">
-                    Marking Scheme
-                </a>
-
-                <a class="folder" href="mathematics/${year}/notes/">
-                    Notes
-                </a>
-
-            </div>
-
-        </div>
-
-        `;
-    }
-
-    yearsArea.innerHTML = `
-
-        <div class="years-section">
-
-            <div class="years-title">
-                MATHEMATICS PAST PAPERS
-            </div>
-
-            ${yearsHTML}
-
-        </div>
-
-    `;
-}
+    
                 ENGLISH
             </label>
 
