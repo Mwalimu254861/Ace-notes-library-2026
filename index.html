@@ -1,6 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 <head><style>
+  <script>
+// KCSE DATA (2000–2027)
+const kcseData = {
+  2000: ["Paper 1", "Paper 2"],
+  2001: ["Paper 1", "Paper 2"],
+  2002: ["Paper 1", "Paper 2"],
+  2003: ["Paper 1", "Paper 2"],
+  2004: ["Paper 1", "Paper 2"],
+  2005: ["Paper 1", "Paper 2"],
+  2006: ["Paper 1", "Paper 2"],
+  2007: ["Paper 1", "Paper 2"],
+  2008: ["Paper 1", "Paper 2"],
+  2009: ["Paper 1", "Paper 2"],
+  2010: ["Paper 1", "Paper 2"],
+  2011: ["Paper 1", "Paper 2"],
+  2012: ["Paper 1", "Paper 2"],
+  2013: ["Paper 1", "Paper 2"],
+  2014: ["Paper 1", "Paper 2"],
+  2015: ["Paper 1", "Paper 2"],
+  2016: ["Paper 1", "Paper 2"],
+  2017: ["Paper 1", "Paper 2"],
+  2018: ["Paper 1", "Paper 2"],
+  2019: ["Paper 1", "Paper 2"],
+  2020: ["Paper 1", "Paper 2"],
+  2021: ["Paper 1", "Paper 2"],
+  2022: ["Paper 1", "Paper 2"],
+  2023: ["Paper 1", "Paper 2"],
+  2024: ["Paper 1", "Paper 2"],
+  2025: ["Paper 1", "Paper 2"],
+  2026: ["Paper 1", "Paper 2"],
+  2027: ["Paper 1", "Paper 2"]
+};
+
+// STEP 1: AFTER REGISTRATION → SHOW YEARS
+function continuePortal() {
+  const dashboard = document.getElementById("dashboardArea");
+
+  let html = `<h2>Select KCSE Year</h2><div class="year-grid">`;
+
+  for (let year in kcseData) {
+    html += `
+      <button class="year-btn" onclick="showPapers(${year})">
+        ${year}
+      </button>
+    `;
+  }
+
+  html += `</div>`;
+
+  dashboard.innerHTML = html;
+
+  // hide registration card
+  document.getElementById("registrationCard").style.display = "none";
+}
+
+// STEP 2: WHEN YEAR IS CLICKED → SHOW PAPER 1 & 2
+function showPapers(year) {
+  const yearsArea = document.getElementById("yearsArea");
+
+  let html = `
+    <h2>KCSE ${year}</h2>
+    <p>Select Paper</p>
+    <div class="paper-grid">
+  `;
+
+  kcseData[year].forEach(paper => {
+    html += `
+      <button class="paper-btn" onclick="openPaper(${year}, '${paper}')">
+        ${paper}
+      </button>
+    `;
+  });
+
+  html += `</div>`;
+
+  yearsArea.innerHTML = html;
+}
+
+// STEP 3: OPEN PAPER (LINK YOUR PDF HERE)
+function openPaper(year, paper) {
+  alert(`Opening ${year} ${paper}`);
+
+  // REAL PDF STRUCTURE (use this later)
+  // window.open(`papers/${year}/${paper.toLowerCase().replace(" ", "-")}.pdf`);
+}
+</script>
 body {
   font-family: Arial, sans-serif;
   background: #f4f6f9;
